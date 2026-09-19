@@ -18,13 +18,13 @@ navigation: widget
 
 ### STRINGS, IMAGES AND COLORS
 strings:
-    productName:         "Arrera Linux"
-    version:             "41"
-    shortVersion:        "41"
-    shortProductName:    "Arrera"
-    versionedName:       "Arrera Linux 41"
-    shortVersionedName:  "Arrera 41"
-    bootloaderEntryName: "Arrera Linux"
+    productName:         "Arrera Blue"
+    version:             "2026"
+    shortVersion:        "2026"
+    shortProductName:    "Arrera Blue"
+    versionedName:       "Arrera Blue 2026"
+    shortVersionedName:  "Arrera Blue 2026"
+    bootloaderEntryName: "Arrera Blue"
     productUrl:          "https://github.com/Arrera-Software"
     supportUrl:          "https://github.com/Arrera-Software"
     knownIssuesUrl:      "https://github.com/Arrera-Software"
@@ -40,9 +40,9 @@ images:
 slideshow:     "slideshow.qml"
 slideshowAPI:  2
 
-### SIDEBAR COLORS (requis par Calamares, sans ce bloc yaml-cpp lève InvalidNode)
+### SIDEBAR COLORS (Palette GTK 4 / Libadwaita Dark)
 style:
-    SidebarBackground:        "#1E1E2E"
-    SidebarBackgroundCurrent: "#1A73E8"
-    SidebarText:              "#DDDDDD"
-    SidebarTextCurrent:       "#FFFFFF"
+    SidebarBackground:        "#1e1e1e"
+    SidebarBackgroundCurrent: "#3584e4"
+    SidebarText:              "#9a9996"
+    SidebarTextCurrent:       "#ffffff"

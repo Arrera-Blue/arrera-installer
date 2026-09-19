@@ -22,6 +22,8 @@ Environment=XDG_RUNTIME_DIR=/run/user/0
 Environment=XDG_SESSION_TYPE=wayland
 Environment=QT_QPA_PLATFORM=wayland;xcb
 Environment=GDK_BACKEND=wayland,x11
+Environment=XKB_DEFAULT_LAYOUT=fr
+Environment=XKB_DEFAULT_MODEL=pc105
 Environment=MOZ_ENABLE_WAYLAND=1
 Restart=on-failure
 RestartSec=2s

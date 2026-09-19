@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 
 Rectangle {
     id: presentation
-    color: "#0f172a"
+    color: "#242424"
     anchors.fill: parent
 
     property int currentSlide: 0
@@ -23,7 +23,7 @@ Rectangle {
             anchors.fill: parent
             opacity: presentation.currentSlide === 0 ? 1 : 0
             visible: opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 500 } }
+            Behavior on opacity { NumberAnimation { duration: 400 } }
         }
 
         Slide2 {
@@ -31,7 +31,7 @@ Rectangle {
             anchors.fill: parent
             opacity: presentation.currentSlide === 1 ? 1 : 0
             visible: opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 500 } }
+            Behavior on opacity { NumberAnimation { duration: 400 } }
         }
 
         Slide3 {
@@ -39,7 +39,7 @@ Rectangle {
             anchors.fill: parent
             opacity: presentation.currentSlide === 2 ? 1 : 0
             visible: opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 500 } }
+            Behavior on opacity { NumberAnimation { duration: 400 } }
         }
     }
 
@@ -54,13 +54,13 @@ Rectangle {
         }
     }
 
-    // Indicateurs de pagination en bas
+    // Indicateurs de pagination Libadwaita Pills en bas
     Row {
         id: indicatorsRow
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 24
-        spacing: 12
+        spacing: 10
 
         Repeater {
             model: presentation.totalSlides
@@ -68,7 +68,7 @@ Rectangle {
                 width: index === presentation.currentSlide ? 28 : 10
                 height: 10
                 radius: 5
-                color: index === presentation.currentSlide ? "#38bdf8" : "#334155"
+                color: index === presentation.currentSlide ? "#3584e4" : "rgba(255, 255, 255, 0.2)"
                 Behavior on width { NumberAnimation { duration: 250 } }
                 Behavior on color { ColorAnimation { duration: 250 } }
 

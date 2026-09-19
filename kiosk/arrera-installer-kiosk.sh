@@ -14,8 +14,22 @@ chmod 0700 "$XDG_RUNTIME_DIR"
 export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
 export QT_QPA_PLATFORM="wayland;xcb"
 export GDK_BACKEND="wayland,x11"
-export XDG_CURRENT_DESKTOP="ArreraInstaller"
+export XDG_CURRENT_DESKTOP="GNOME"
+export DESKTOP_SESSION="gnome"
+export QT_QPA_PLATFORMTHEME="gnome"
+export GTK_THEME="Adwaita:dark"
+export XCURSOR_THEME="Adwaita"
+export XCURSOR_SIZE="24"
 export MOZ_ENABLE_WAYLAND=1
+
+# Configuration du clavier pour le compositeur Wayland (Cage / wlroots)
+# Détecte la disposition configurée dans le système (ex: fr) ou applique fr par défaut
+KEYMAP="$(localectl status 2>/dev/null | awk -F': ' '/X11 Layout/ {print $2}' | tr -d ' ' || true)"
+if [ -z "$KEYMAP" ]; then
+    KEYMAP="$(awk -F'=' '/KEYMAP/ {gsub(/["'\'' ]/, "", $2); print $2}' /etc/vconsole.conf 2>/dev/null || true)"
+fi
+export XKB_DEFAULT_LAYOUT="${KEYMAP:-fr}"
+export XKB_DEFAULT_MODEL="pc105"
 
 CALAMARES_BIN="$(command -v calamares || echo "/usr/bin/calamares")"
 

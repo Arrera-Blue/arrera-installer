@@ -1,13 +1,13 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Install Arrera Linux
-Name[fr]=Installer Arrera Linux
+Name=Install Arrera Blue 2026
+Name[fr]=Installer Arrera Blue 2026
 GenericName=System Installer
 GenericName[fr]=Installateur du système
-Comment=Install the operating system to disk
-Comment[fr]=Installer le système d'exploitation Arrera Linux sur le disque
-Exec=calamares -d
+Comment=Install Arrera Blue 2026 to disk
+Comment[fr]=Installer Arrera Blue 2026 sur le disque
+Exec=env QT_QPA_PLATFORMTHEME=gnome GTK_THEME=Adwaita:dark calamares -d
 Icon=calamares
 Terminal=false
 StartupNotify=true

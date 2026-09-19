@@ -16,8 +16,9 @@ Item {
             spacing: 8
 
             Text {
-                text: "Bienvenue dans Arrera Linux"
-                font.pixelSize: 28
+                text: "Bienvenue dans Arrera Blue 2026"
+                font.family: "Cantarell"
+                font.pixelSize: 26
                 font.bold: true
                 color: "#ffffff"
                 horizontalAlignment: Text.AlignHCenter
@@ -25,28 +26,29 @@ Item {
             }
 
             Text {
-                text: "Une expérience bureau moderne, fluide et élégante propulsée par Fedora"
+                text: "Une expérience bureau moderne, fluide et élégante"
+                font.family: "Cantarell"
                 font.pixelSize: 15
-                color: "#94a3b8"
+                color: "#9a9996"
                 horizontalAlignment: Text.AlignHCenter
                 width: parent.width
             }
         }
 
-        // Séparateur décoratif dégradé
+        // Séparateur décoratif Libadwaita Blue
         Rectangle {
-            width: 140
+            width: 120
             height: 3
             radius: 2
             anchors.horizontalCenter: parent.horizontalCenter
             gradient: Gradient {
                 orientation: Gradient.Horizontal
-                GradientStop { position: 0.0; color: "#2563eb" }
-                GradientStop { position: 1.0; color: "#38bdf8" }
+                GradientStop { position: 0.0; color: "#3584e4" }
+                GradientStop { position: 1.0; color: "#62a0ea" }
             }
         }
 
-        // Cartes de caractéristiques
+        // Cartes de caractéristiques (Style Libadwaita Cards @card_bg_color #2e2e2e)
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 16
@@ -55,8 +57,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#1e293b"
-                border.color: "#334155"
+                color: "#2e2e2e"
+                border.color: "rgba(255, 255, 255, 0.08)"
                 border.width: 1
 
                 Column {
@@ -66,15 +68,17 @@ Item {
 
                     Text {
                         text: "🎨 Design Soigné"
-                        font.pixelSize: 16
+                        font.family: "Cantarell"
+                        font.pixelSize: 15
                         font.bold: true
-                        color: "#38bdf8"
+                        color: "#62a0ea"
                     }
 
                     Text {
-                        text: "Identité visuelle Arrera Blue, fonds d'écran exclusifs et thème sombre harmonieux."
+                        text: "Identité visuelle Arrera Blue, fonds d'écran exclusifs et thème sombre GTK 4 harmonieux."
+                        font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#cbd5e1"
+                        color: "#deddda"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }
@@ -85,8 +89,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#1e293b"
-                border.color: "#334155"
+                color: "#2e2e2e"
+                border.color: "rgba(255, 255, 255, 0.08)"
                 border.width: 1
 
                 Column {
@@ -96,15 +100,17 @@ Item {
 
                     Text {
                         text: "⚡ GNOME Épuré"
-                        font.pixelSize: 16
+                        font.family: "Cantarell"
+                        font.pixelSize: 15
                         font.bold: true
-                        color: "#60a5fa"
+                        color: "#3584e4"
                     }
 
                     Text {
                         text: "Bureau optimisé avec extensions préconfigurées pour un confort d'usage immédiat."
+                        font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#cbd5e1"
+                        color: "#deddda"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }
@@ -115,8 +121,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#1e293b"
-                border.color: "#334155"
+                color: "#2e2e2e"
+                border.color: "rgba(255, 255, 255, 0.08)"
                 border.width: 1
 
                 Column {
@@ -126,15 +132,17 @@ Item {
 
                     Text {
                         text: "🚀 Prêt à l'Emploi"
-                        font.pixelSize: 16
+                        font.family: "Cantarell"
+                        font.pixelSize: 15
                         font.bold: true
-                        color: "#93c5fd"
+                        color: "#62a0ea"
                     }
 
                     Text {
                         text: "Tous les outils essentiels préinstallés pour la création, le web et le multimédia."
+                        font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#cbd5e1"
+                        color: "#deddda"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }

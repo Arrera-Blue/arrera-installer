@@ -75,6 +75,7 @@ install:
 	install -m 0644 branding/arrera/branding.desc $(DESTDIR)$(BRANDING_DIR)/branding.desc
 	install -m 0644 branding/arrera/stylesheet.qss $(DESTDIR)$(BRANDING_DIR)/stylesheet.qss
 	install -m 0644 branding/arrera/arrera-logo.svg $(DESTDIR)$(BRANDING_DIR)/arrera-logo.svg
+	install -m 0644 branding/arrera/*.png $(DESTDIR)$(BRANDING_DIR)/
 	install -m 0644 branding/arrera/slideshow/*.qml $(DESTDIR)$(BRANDING_DIR)/
 	cp -a branding/arrera/slideshow/* $(DESTDIR)$(BRANDING_DIR)/slideshow/
 

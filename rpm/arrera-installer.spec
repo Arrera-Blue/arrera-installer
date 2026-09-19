@@ -1,8 +1,8 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        9%{?dist}
-Summary:        Configuration Calamares et session kiosque pour Arrera Linux
-Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
+Release:        11%{?dist}
+Summary:        Configuration Calamares et session kiosque pour Arrera Blue
+Summary(en):    Calamares installer configuration and kiosk session for Arrera Blue
 
 License:        GPL-3.0-or-later
 URL:            https://github.com/Arrera-Software/arrera-installer
@@ -24,13 +24,16 @@ Requires:       polkit
 Requires:       systemd
 Requires:       dnf
 
+Recommends:     abattis-cantarell-fonts
+Recommends:     adwaita-cursor-theme
+Recommends:     qt6-qtwayland-adwaita-decoration
 Suggests:       openbox
 
 %description
-Ce paquet fournit la configuration complète de Calamares pour Arrera Linux,
+Ce paquet fournit la configuration complète de Calamares pour Arrera Blue,
 incluant :
 - Le pipeline d'installation adapté à Fedora (x86_64 et aarch64)
-- Le branding visuel Arrera (thème QSS sombre/bleu, logo vectoriel, diaporama QML)
+- Le branding visuel Arrera Blue (thème QSS sombre/bleu, logo vectoriel, diaporama QML)
 - La gestion des utilisateurs (appartenance automatique au groupe wheel)
 - La configuration du chargeur d'amorçage GRUB2 (EFI et BIOS)
 - Le script post-installation de rafraîchissement des dépôts Arrera et DNF
@@ -38,7 +41,7 @@ incluant :
 
 %description -l en
 This package provides the complete Calamares installer configuration for
-Arrera Linux, including:
+Arrera Blue, including:
 - Optimized Fedora installation pipeline (x86_64 and aarch64)
 - Visual Arrera branding (dark/blue QSS theme, vector logo, QML slideshow)
 - User account management (automatic wheel group membership)
@@ -78,25 +81,32 @@ Arrera Linux, including:
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
-* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-9
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-10
+- Complete GTK 4 / Libadwaita Dark visual redesign in stylesheet.qss and QML slideshow
+- Configure GNOME/Wayland environment variables (QT_QPA_PLATFORMTHEME, GTK_THEME, Adwaita cursor)
+- Add Recommends for Cantarell fonts, Adwaita cursor, and QtWayland Adwaita decoration
+
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-9
 - Fix unpackfs: configure /run/rootfsbase ext4 (Fedora LiveOS layout)
 - Ensure /run/rootfsbase is mounted in kiosk script before Calamares starts
 - Add squashfs-tools, rsync, dosfstools, e2fsprogs to dependencies
 - Silence console output during boot: send logs to journal, clear tty1, hide cursor
+- Fix keyboard layout: export XKB_DEFAULT_LAYOUT (fr/AZERTY) for Cage Wayland
+- Add keyboard.conf module config with useLocale1 and guessLayout
 - Display exit prompt only if Calamares exits
 
-* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
 - Add required style: block to branding.desc
   Calamares 3.3 requires a style: section with sidebar colors; without it
   yaml-cpp throws YAML::InvalidNode ("first invalid key: style") on startup.
 
-* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
 - Rewrite branding.desc following official Calamares template exactly
 - Remove uploadServer block (optional, sizeLimit sub-key caused invalid key FATAL)
 - Fix windowSize format: remove space after comma (1060px,680px)
 - Add missing windowPlacement and shortVersion keys
 
-* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-6
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-6
 - ROOT FIX: Remove -c /etc/calamares flag from all Calamares invocations
   When -c is passed, Calamares uses that dir as its full app data directory,
   looking for branding/, qml/ etc. inside /etc/calamares/ — causing FATAL errors.
@@ -105,7 +115,7 @@ Arrera Linux, including:
 - Remove /etc/calamares/qml symlink (no longer needed)
 - Remove -c flag from desktop file Exec line
 
-* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-5
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-5
 - Fix FATAL: missing qml/ — Calamares -c /etc/calamares uses /etc/calamares as
   app data dir and looks for /etc/calamares/qml (not /usr/share/calamares/qml)
 - Add symlink /etc/calamares/qml → /usr/share/calamares/qml in Makefile and spec
