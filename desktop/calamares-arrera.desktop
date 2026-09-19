@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Install Arrera Linux
+Name[fr]=Installer Arrera Linux
+GenericName=System Installer
+GenericName[fr]=Installateur du système
+Comment=Install the operating system to disk
+Comment[fr]=Installer le système d'exploitation Arrera Linux sur le disque
+Exec=calamares -c /etc/calamares/settings.conf
+Icon=calamares
+Terminal=false
+StartupNotify=true
+Categories=System;Settings;PackageManager;
+Keywords=system;installer;fedora;arrera;calamares;

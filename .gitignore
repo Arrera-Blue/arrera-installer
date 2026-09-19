@@ -1,0 +1,13 @@
+# Fichiers de compilation et archives
+build/
+output/
+*.tar.gz
+*.src.rpm
+*.noarch.rpm
+*.rpm
+
+# Fichiers temporaires éditeurs et OS
+*~
+*.swp
+*.bak
+.DS_Store

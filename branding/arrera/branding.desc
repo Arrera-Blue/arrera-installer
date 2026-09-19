@@ -1,0 +1,37 @@
+# Branding Descriptor pour Arrera Linux - Calamares
+---
+componentName:  arrera
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 1060px, 680px
+
+strings:
+    productName:         "Arrera Linux"
+    version:             "41"
+    shortProductName:    "Arrera"
+    versionedName:       "Arrera Linux 41"
+    shortVersionedName:  "Arrera 41"
+    bootloaderEntryName: "Arrera Linux"
+    productUrl:          "https://github.com/Arrera-Software"
+    supportUrl:          "https://github.com/Arrera-Software"
+    knownIssuesUrl:      "https://github.com/Arrera-Software"
+    releaseNotesUrl:     "https://github.com/Arrera-Software"
+    donateUrl:           "https://github.com/Arrera-Software"
+
+images:
+    productLogo:         "arrera-logo.svg"
+    productIcon:         "arrera-logo.svg"
+    productWelcome:      "arrera-logo.svg"
+
+style:
+   sidebar: "widget"
+   navigation: "widget"
+
+slideshow:               "slideshow.qml"
+slideshowAPI:            2
+
+uploadServer :
+    type :    "fiche"
+    url :     "http://termbin.com:9999"
+    sizeLimit : -1

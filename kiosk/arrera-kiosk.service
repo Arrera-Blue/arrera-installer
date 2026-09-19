@@ -1,0 +1,29 @@
+[Unit]
+Description=Arrera Linux Calamares Installer Kiosk Session
+Documentation=https://github.com/Arrera-Software
+After=systemd-user-sessions.service plymouth-quit-wait.service systemd-udev-settle.service
+Conflicts=getty@tty1.service gdm.service lightdm.service sddm.service
+Before=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/arrera-installer-kiosk.sh
+StandardInput=tty
+StandardOutput=journal+console
+StandardError=journal+console
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+PAMName=login
+User=root
+WorkingDirectory=/root
+Environment=XDG_SESSION_TYPE=wayland
+Environment=QT_QPA_PLATFORM=wayland;xcb
+Environment=GDK_BACKEND=wayland,x11
+Environment=MOZ_ENABLE_WAYLAND=1
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
