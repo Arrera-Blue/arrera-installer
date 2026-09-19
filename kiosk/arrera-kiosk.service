@@ -1,7 +1,7 @@
 [Unit]
 Description=Arrera Linux Calamares Installer Kiosk Session
 Documentation=https://github.com/Arrera-Software
-After=systemd-user-sessions.service plymouth-quit-wait.service systemd-udev-settle.service
+After=systemd-user-sessions.service systemd-udev-settle.service
 Conflicts=getty@tty1.service gdm.service lightdm.service sddm.service
 Before=getty@tty1.service
 
@@ -18,6 +18,7 @@ TTYVTDisallocate=yes
 PAMName=login
 User=root
 WorkingDirectory=/root
+Environment=XDG_RUNTIME_DIR=/run/user/0
 Environment=XDG_SESSION_TYPE=wayland
 Environment=QT_QPA_PLATFORM=wayland;xcb
 Environment=GDK_BACKEND=wayland,x11

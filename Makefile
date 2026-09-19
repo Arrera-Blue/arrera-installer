@@ -63,6 +63,7 @@ install:
 	# Répertoires cibles
 	install -d -m 0755 $(DESTDIR)$(CALAMARES_DIR)/modules
 	install -d -m 0755 $(DESTDIR)$(BRANDING_DIR)/slideshow
+	install -d -m 0755 $(DESTDIR)$(DATADIR)/calamares/qml
 	install -d -m 0755 $(DESTDIR)$(BINDIR)
 	install -d -m 0755 $(DESTDIR)$(UNITDIR)
 	install -d -m 0755 $(DESTDIR)$(APPDIR)
@@ -71,10 +72,10 @@ install:
 	install -m 0644 config/settings.conf $(DESTDIR)$(CALAMARES_DIR)/settings.conf
 	install -m 0644 config/modules/*.conf $(DESTDIR)$(CALAMARES_DIR)/modules/
 
-	# Branding Arrera
 	install -m 0644 branding/arrera/branding.desc $(DESTDIR)$(BRANDING_DIR)/branding.desc
 	install -m 0644 branding/arrera/stylesheet.qss $(DESTDIR)$(BRANDING_DIR)/stylesheet.qss
 	install -m 0644 branding/arrera/arrera-logo.svg $(DESTDIR)$(BRANDING_DIR)/arrera-logo.svg
+	install -m 0644 branding/arrera/slideshow/*.qml $(DESTDIR)$(BRANDING_DIR)/
 	cp -a branding/arrera/slideshow/* $(DESTDIR)$(BRANDING_DIR)/slideshow/
 
 	# Mode Kiosque

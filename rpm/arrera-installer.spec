@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        1%{?dist}
+Release:        7%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -14,12 +14,12 @@ BuildRequires:  systemd-rpm-macros
 BuildRequires:  make
 
 Requires:       calamares
+Requires:       cage
 Requires:       grub2-tools
 Requires:       polkit
 Requires:       systemd
 Requires:       dnf
 
-Recommends:     cage
 Suggests:       openbox
 
 %description
@@ -67,13 +67,50 @@ Arrera Linux, including:
 %dir %{_sysconfdir}/calamares/modules
 %config(noreplace) %{_sysconfdir}/calamares/settings.conf
 %config(noreplace) %{_sysconfdir}/calamares/modules/*.conf
+%dir %{_datadir}/calamares/qml
 %{_datadir}/calamares/branding/arrera/
 %{_bindir}/arrera-installer-kiosk.sh
 %{_unitdir}/arrera-kiosk.service
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
-* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 1.0.0-1
+* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
+- Rewrite branding.desc following official Calamares template exactly
+- Remove uploadServer block (optional, sizeLimit sub-key caused invalid key FATAL)
+- Fix windowSize format: remove space after comma (1060px,680px)
+- Add missing windowPlacement and shortVersion keys
+
+* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-6
+- ROOT FIX: Remove -c /etc/calamares flag from all Calamares invocations
+  When -c is passed, Calamares uses that dir as its full app data directory,
+  looking for branding/, qml/ etc. inside /etc/calamares/ — causing FATAL errors.
+  Without -c, Calamares correctly uses /etc/calamares for settings.conf and
+  /usr/share/calamares for data (branding, qml, modules).
+- Remove /etc/calamares/qml symlink (no longer needed)
+- Remove -c flag from desktop file Exec line
+
+* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-5
+- Fix FATAL: missing qml/ — Calamares -c /etc/calamares uses /etc/calamares as
+  app data dir and looks for /etc/calamares/qml (not /usr/share/calamares/qml)
+- Add symlink /etc/calamares/qml → /usr/share/calamares/qml in Makefile and spec
+- Add same symlink creation in kiosk script as live fallback
+
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-4
+- Create and include /usr/share/calamares/qml directory required by Calamares
+- Copy all QML slideshow components into branding root directory
+- Fix sidebar and navigation keys in branding.desc
+
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-3
+- Fix Calamares -c argument to pass configuration directory instead of file
+
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-2
+- Make cage a mandatory dependency
+- Ensure XDG_RUNTIME_DIR is initialized for kiosk Wayland/Qt session
+- Perform full DNF system upgrade on installation
+- Fix slideshow installation path for Calamares
+- Enable GDM on installed target system
+
+* Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-1
 - Initial release of arrera-installer for Arrera Linux
 - Added Calamares configuration for Fedora
 - Added Arrera dark/blue branding, vector logo, and QML slideshow
