@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -15,6 +15,10 @@ BuildRequires:  make
 
 Requires:       calamares
 Requires:       cage
+Requires:       squashfs-tools
+Requires:       rsync
+Requires:       dosfstools
+Requires:       e2fsprogs
 Requires:       grub2-tools
 Requires:       polkit
 Requires:       systemd
@@ -74,6 +78,13 @@ Arrera Linux, including:
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
+* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-9
+- Fix unpackfs: configure /run/rootfsbase ext4 (Fedora LiveOS layout)
+- Ensure /run/rootfsbase is mounted in kiosk script before Calamares starts
+- Add squashfs-tools, rsync, dosfstools, e2fsprogs to dependencies
+- Silence console output during boot: send logs to journal, clear tty1, hide cursor
+- Display exit prompt only if Calamares exits
+
 * Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
 - Add required style: block to branding.desc
   Calamares 3.3 requires a style: section with sidebar colors; without it
