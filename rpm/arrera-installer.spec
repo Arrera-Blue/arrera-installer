@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -74,6 +74,11 @@ Arrera Linux, including:
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
+* Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
+- Add required style: block to branding.desc
+  Calamares 3.3 requires a style: section with sidebar colors; without it
+  yaml-cpp throws YAML::InvalidNode ("first invalid key: style") on startup.
+
 * Fri Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
 - Rewrite branding.desc following official Calamares template exactly
 - Remove uploadServer block (optional, sizeLimit sub-key caused invalid key FATAL)
