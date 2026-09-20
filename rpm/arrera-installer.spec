@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Blue
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Blue
 
@@ -81,6 +81,19 @@ Arrera Blue, including:
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
+* Sun Sep 20 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-12
+- Switch installer theme to GTK 4 / Libadwaita Light across all components
+  (window #fafafa, sidebar #ebebeb, boxed cards #ffffff, crisp dark typography #1e1e1e)
+- Update branding.desc with Libadwaita Light sidebar colors
+- Update kiosk session with GTK_THEME="Adwaita" (light mode)
+- Redesign QML slideshow (slideshow.qml, Slide1-3.qml) for light theme
+- Fix progress bar height (24px pill) and centered percentage typography
+
+* Sun Sep 20 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-11
+- Fix sidebar logo (#logoApp): remove conflicting padding/margin from stylesheet.qss
+- Rebuild high-resolution pixel-perfect 1024x1024 SVG and PNG logo assets
+- Update branding.desc to use arrera-logo.png for crisp unclipped sidebar rendering
+
 * Sat Sep 19 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-10
 - Complete GTK 4 / Libadwaita Dark visual redesign in stylesheet.qss and QML slideshow
 - Configure GNOME/Wayland environment variables (QT_QPA_PLATFORMTHEME, GTK_THEME, Adwaita cursor)

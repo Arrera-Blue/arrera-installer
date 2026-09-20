@@ -32,17 +32,18 @@ strings:
     donateUrl:           ""
 
 images:
-    productLogo:         "arrera-logo.svg"
-    productIcon:         "arrera-logo.svg"
+    productLogo:         "arrera-logo.png"
+    productIcon:         "arrera-logo.png"
     productWelcome:      "arrera-logo.svg"
 
 ### SLIDESHOW
 slideshow:     "slideshow.qml"
 slideshowAPI:  2
 
-### SIDEBAR COLORS (Palette GTK 4 / Libadwaita Dark)
+### SIDEBAR COLORS (Palette GTK 4 / Libadwaita Light)
 style:
-    SidebarBackground:        "#1e1e1e"
+    SidebarBackground:        "#ebebeb"
     SidebarBackgroundCurrent: "#3584e4"
-    SidebarText:              "#9a9996"
+    SidebarText:              "#5e5c64"
     SidebarTextCurrent:       "#ffffff"
+

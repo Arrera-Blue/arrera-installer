@@ -3,7 +3,7 @@ import QtQuick.Controls 2.15
 
 Rectangle {
     id: presentation
-    color: "#242424"
+    color: "#fafafa"
     anchors.fill: parent
 
     property int currentSlide: 0
@@ -68,7 +68,7 @@ Rectangle {
                 width: index === presentation.currentSlide ? 28 : 10
                 height: 10
                 radius: 5
-                color: index === presentation.currentSlide ? "#3584e4" : "rgba(255, 255, 255, 0.2)"
+                color: index === presentation.currentSlide ? "#3584e4" : "rgba(0, 0, 0, 0.15)"
                 Behavior on width { NumberAnimation { duration: 250 } }
                 Behavior on color { ColorAnimation { duration: 250 } }
 

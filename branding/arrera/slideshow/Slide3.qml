@@ -20,7 +20,7 @@ Item {
                 font.family: "Cantarell"
                 font.pixelSize: 26
                 font.bold: true
-                color: "#ffffff"
+                color: "#1e1e1e"
                 horizontalAlignment: Text.AlignHCenter
                 width: parent.width
             }
@@ -29,7 +29,7 @@ Item {
                 text: "La puissance d'une base Fedora moderne supportant x86_64 et aarch64"
                 font.family: "Cantarell"
                 font.pixelSize: 15
-                color: "#9a9996"
+                color: "#5e5c64"
                 horizontalAlignment: Text.AlignHCenter
                 width: parent.width
             }
@@ -48,7 +48,7 @@ Item {
             }
         }
 
-        // Cartes de caractéristiques (Style Libadwaita Cards @card_bg_color #2e2e2e)
+        // Cartes de caractéristiques (Style Libadwaita Cards @card_bg_color #ffffff)
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 16
@@ -57,8 +57,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#2e2e2e"
-                border.color: "rgba(255, 255, 255, 0.08)"
+                color: "#ffffff"
+                border.color: "rgba(0, 0, 0, 0.08)"
                 border.width: 1
 
                 Column {
@@ -71,14 +71,14 @@ Item {
                         font.family: "Cantarell"
                         font.pixelSize: 15
                         font.bold: true
-                        color: "#62a0ea"
+                        color: "#1c71d8"
                     }
 
                     Text {
                         text: "Protection maximale du système avec SELinux actif par défaut et pare-feu firewalld."
                         font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#deddda"
+                        color: "#5e5c64"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }
@@ -89,8 +89,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#2e2e2e"
-                border.color: "rgba(255, 255, 255, 0.08)"
+                color: "#ffffff"
+                border.color: "rgba(0, 0, 0, 0.08)"
                 border.width: 1
 
                 Column {
@@ -110,7 +110,7 @@ Item {
                         text: "Prise en charge complète des processeurs PC traditionnels et des plateformes ARM64."
                         font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#deddda"
+                        color: "#5e5c64"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }
@@ -121,8 +121,8 @@ Item {
                 width: 200
                 height: 150
                 radius: 12
-                color: "#2e2e2e"
-                border.color: "rgba(255, 255, 255, 0.08)"
+                color: "#ffffff"
+                border.color: "rgba(0, 0, 0, 0.08)"
                 border.width: 1
 
                 Column {
@@ -135,14 +135,14 @@ Item {
                         font.family: "Cantarell"
                         font.pixelSize: 15
                         font.bold: true
-                        color: "#62a0ea"
+                        color: "#1c71d8"
                     }
 
                     Text {
                         text: "Support étendu du matériel le plus récent : GPU, écrans HiDPI, Wi-Fi 6/7 et Bluetooth."
                         font.family: "Cantarell"
                         font.pixelSize: 12
-                        color: "#deddda"
+                        color: "#5e5c64"
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }

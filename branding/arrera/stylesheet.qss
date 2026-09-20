@@ -1,28 +1,28 @@
 /* ==========================================================================
-   Arrera Blue 2026 - Thème Calamares GNOME / GTK 4 / Libadwaita Dark
-   Fidèle aux spécifications de design GNOME 46+ et Libadwaita
+   Arrera Blue 2026 - Thème Calamares GNOME / GTK 4 / Libadwaita Light
+   Fidèle aux spécifications de design GNOME 46+ et Libadwaita (Thème Clair)
    Palette officielle :
-     - Fenêtre (@window_bg_color)       : #242424
-     - Vue / Sidebar (@view_bg_color)    : #1e1e1e
-     - Cartes (@card_bg_color)           : #2e2e2e
-     - En-tête / Action (@headerbar_bg)  : #303030
-     - Bordure subtile                   : rgba(255, 255, 255, 0.08)
-     - Bordure forte                     : rgba(255, 255, 255, 0.14)
-     - Texte principal                   : #ffffff
-     - Texte secondaire (@dim_label)     : #9a9996
+     - Fenêtre (@window_bg_color)       : #fafafa
+     - Barre latérale (@view_bg_color)   : #ebebeb
+     - Cartes & Listes (@card_bg_color)  : #ffffff
+     - En-tête / Action                  : #fafafa
+     - Bordure subtile                   : rgba(0, 0, 0, 0.08)
+     - Bordure forte                     : rgba(0, 0, 0, 0.15)
+     - Texte principal                   : #1e1e1e
+     - Texte secondaire (@dim_label)     : #5e5c64
      - Accent GNOME Blue 3               : #3584e4
-     - Accent Survol GNOME Blue 2        : #4894f6
-     - Accent Actif GNOME Blue 4         : #2672d4
+     - Accent Survol GNOME Blue 2        : #1c71d8
+     - Accent Actif GNOME Blue 4         : #1a5fb4
      - Destructif (Rouge Adwaita)        : #c01c28 / #e01b24
-     - Succès (Vert Adwaita)             : #2ec27e
+     - Succès (Vert Adwaita)             : #26a269
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. Base globale & Typographie GNOME Cantarell
    -------------------------------------------------------------------------- */
 QWidget {
-    background-color: #242424;
-    color: #ffffff;
+    background-color: #fafafa;
+    color: #1e1e1e;
     font-family: "Adwaita Sans", "Cantarell", "Inter", "Segoe UI", sans-serif;
     font-size: 13px;
     selection-background-color: #3584e4;
@@ -31,13 +31,13 @@ QWidget {
 }
 
 QMainWindow, QDialog {
-    background-color: #242424;
-    color: #ffffff;
+    background-color: #fafafa;
+    color: #1e1e1e;
 }
 
 /* Zone centrale d'affichage des étapes Calamares */
 #mainView, #viewManager, QStackedWidget {
-    background-color: #242424;
+    background-color: #fafafa;
     border: none;
 }
 
@@ -45,11 +45,10 @@ QMainWindow, QDialog {
    2. Barre latérale (Style AdwNavigationSplitView)
    -------------------------------------------------------------------------- */
 #sidebarApp {
-    background-color: #1e1e1e;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ebebeb;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
     min-width: 240px;
     max-width: 260px;
-    padding: 16px 0px;
 }
 
 #sidebarWidget {
@@ -57,42 +56,52 @@ QMainWindow, QDialog {
     border: none;
 }
 
-/* Logo de marque en haut de la barre latérale */
-#logoLabel {
-    padding: 16px 20px 24px 20px;
+/* Logo de marque en haut de la barre latérale (#logoApp dans Calamares) */
+#logoApp, QLabel#logoApp {
     background-color: transparent;
+    border: none;
+    border-radius: 0px;
+    margin: 24px auto 14px auto;
+    padding: 0px;
+    min-height: 80px;
+    max-height: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    qproperty-alignment: AlignCenter;
 }
 
-/* Libellés des étapes dans la barre latérale (Pillules Libadwaita) */
-#sidebarApp QLabel {
-    color: #9a9996;
-    padding: 10px 18px;
-    margin: 3px 12px;
-    font-size: 13px;
-    font-weight: 500;
+/* Étapes de progression dans la barre latérale (ProgressTreeView) */
+#sidebarApp QTreeView, #sidebarApp ProgressTreeView {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#sidebarApp QTreeView::item, #sidebarApp ProgressTreeView::item {
+    padding: 8px 14px;
     border-radius: 8px;
-    background-color: transparent;
+    margin: 2px 8px;
+    color: #5e5c64;
 }
 
-/* Survol étape non sélectionnée */
-#sidebarApp QLabel:hover {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.06);
+#sidebarApp QTreeView::item:hover, #sidebarApp ProgressTreeView::item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #1e1e1e;
 }
 
-/* Étape active / courante (Pillule bleue Libadwaita @accent_bg_color) */
-#sidebarApp QLabel[selected=true] {
-    color: #ffffff;
+#sidebarApp QTreeView::item:selected, #sidebarApp ProgressTreeView::item:selected {
     background-color: #3584e4;
+    color: #ffffff;
     font-weight: 600;
-    border-radius: 8px;
 }
 
 /* Boutons utilitaires en bas de la sidebar (À propos, Journal de débogage) */
 #sidebarApp QPushButton {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #c0bfbc;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #5e5c64;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     padding: 7px 14px;
     font-size: 12px;
@@ -102,30 +111,30 @@ QMainWindow, QDialog {
 }
 
 #sidebarApp QPushButton:hover {
-    background-color: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1e1e1e;
+    border-color: rgba(0, 0, 0, 0.12);
 }
 
 #sidebarApp QPushButton:pressed {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.12);
 }
 
 /* --------------------------------------------------------------------------
    3. Barre d'action inférieure (Navigation / AdwBottomBar)
    -------------------------------------------------------------------------- */
 #navigationWidget {
-    background-color: #242424;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #fafafa;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding: 14px 24px;
     min-height: 48px;
 }
 
-/* Boutons standards (AdwButton - Pilules plates Libadwaita) */
+/* Boutons standards (AdwButton - Pilules Libadwaita Light) */
 QPushButton {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 8px;
     padding: 8px 22px;
     min-height: 26px;
@@ -135,18 +144,18 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background-color: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.1);
+    background-color: #f2f2f2;
+    border-color: rgba(0, 0, 0, 0.2);
 }
 
 QPushButton:pressed {
-    background-color: rgba(255, 255, 255, 0.22);
+    background-color: #e6e6e6;
 }
 
 QPushButton:disabled {
-    background-color: rgba(255, 255, 255, 0.04);
-    color: rgba(255, 255, 255, 0.3);
-    border-color: transparent;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.06);
 }
 
 /* Bouton d'action suggérée (Suivant / Installer - .suggested-action Libadwaita) */
@@ -158,27 +167,29 @@ QPushButton#nextButton, QPushButton[primary=true] {
 }
 
 QPushButton#nextButton:hover, QPushButton[primary=true]:hover {
-    background-color: #4894f6;
+    background-color: #1c71d8;
 }
 
 QPushButton#nextButton:pressed, QPushButton[primary=true]:pressed {
-    background-color: #2672d4;
+    background-color: #1a5fb4;
 }
 
 QPushButton#nextButton:disabled, QPushButton[primary=true]:disabled {
     background-color: rgba(53, 132, 228, 0.35);
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* Bouton d'annulation (Action destructive douce) */
 QPushButton#cancelButton {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    color: #1e1e1e;
 }
 
 QPushButton#cancelButton:hover {
-    background-color: rgba(224, 27, 36, 0.18);
-    border: 1px solid rgba(224, 27, 36, 0.45);
-    color: #f66151;
+    background-color: rgba(224, 27, 36, 0.08);
+    border: 1px solid rgba(224, 27, 36, 0.4);
+    color: #c01c28;
 }
 
 QPushButton#cancelButton:pressed {
@@ -191,26 +202,26 @@ QPushButton#cancelButton:pressed {
    -------------------------------------------------------------------------- */
 QLabel {
     background-color: transparent;
-    color: #ffffff;
+    color: #1e1e1e;
 }
 
 QLabel#titleLabel, QLabel#welcomeLabel, QLabel#headerLabel {
     font-size: 22px;
     font-weight: 800;
-    color: #ffffff;
+    color: #1e1e1e;
     margin-bottom: 6px;
     letter-spacing: -0.3px;
 }
 
 QLabel#subTitleLabel {
     font-size: 14px;
-    color: #9a9996;
+    color: #5e5c64;
     margin-bottom: 18px;
 }
 
 QLabel#explanationLabel, QLabel#descLabel {
     font-size: 13px;
-    color: #deddda;
+    color: #3d3d3d;
     line-height: 1.4;
 }
 
@@ -218,8 +229,8 @@ QLabel#explanationLabel, QLabel#descLabel {
    5. Cartes & Listes groupées (Libadwaita Boxed Lists & Cards)
    -------------------------------------------------------------------------- */
 QGroupBox {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     margin-top: 24px;
     padding: 16px;
@@ -232,15 +243,15 @@ QGroupBox::title {
     left: 12px;
     top: 4px;
     padding: 0 6px;
-    color: #9a9996;
+    color: #5e5c64;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 #requirementsBox, QFrame#requirementsBox, QWidget#requirementsWidget {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 16px;
     margin: 10px 0px;
@@ -255,9 +266,9 @@ QGroupBox::title {
    6. Menus déroulants (Sélecteurs de langue, fuseaux - Style AdwComboRow)
    -------------------------------------------------------------------------- */
 QComboBox {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 8px;
     padding: 8px 14px;
     min-height: 24px;
@@ -265,8 +276,8 @@ QComboBox {
 }
 
 QComboBox:hover {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.14);
+    background-color: #f8f8f8;
+    border-color: rgba(0, 0, 0, 0.22);
 }
 
 QComboBox:focus {
@@ -278,15 +289,15 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 28px;
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
 }
 
 QComboBox QAbstractItemView {
-    background-color: #2e2e2e;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 10px;
     selection-background-color: #3584e4;
     selection-color: #ffffff;
@@ -301,7 +312,7 @@ QComboBox QAbstractItemView::item {
 }
 
 QComboBox QAbstractItemView::item:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 QComboBox QAbstractItemView::item:selected {
@@ -313,9 +324,9 @@ QComboBox QAbstractItemView::item:selected {
    7. Champs de saisie (AdwEntryRow)
    -------------------------------------------------------------------------- */
 QLineEdit, QTextEdit, QPlainTextEdit {
-    background-color: rgba(255, 255, 255, 0.07);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 8px;
     padding: 9px 14px;
     selection-background-color: #3584e4;
@@ -323,13 +334,13 @@ QLineEdit, QTextEdit, QPlainTextEdit {
 }
 
 QLineEdit:hover, QTextEdit:hover, QPlainTextEdit:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    background-color: rgba(255, 255, 255, 0.09);
+    border-color: rgba(0, 0, 0, 0.24);
+    background-color: #fafafa;
 }
 
 QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
     border: 2px solid #3584e4;
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: #ffffff;
     padding: 8px 13px;
 }
 
@@ -337,11 +348,11 @@ QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
    8. Listes, Arborescences & Tableaux (Boxed Lists Adwaita)
    -------------------------------------------------------------------------- */
 QListView, QTreeView, QTableView {
-    background-color: #2e2e2e;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    alternate-background-color: #282828;
+    alternate-background-color: #f6f5f4;
     padding: 6px;
     outline: none;
 }
@@ -350,12 +361,12 @@ QListView::item, QTreeView::item {
     padding: 10px 14px;
     border-radius: 8px;
     margin: 2px 0px;
-    color: #deddda;
+    color: #1e1e1e;
 }
 
 QListView::item:hover, QTreeView::item:hover {
-    background-color: rgba(255, 255, 255, 0.07);
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
 }
 
 QListView::item:selected, QTreeView::item:selected {
@@ -365,11 +376,11 @@ QListView::item:selected, QTreeView::item:selected {
 }
 
 QHeaderView::section {
-    background-color: #1e1e1e;
-    color: #9a9996;
+    background-color: #ebebeb;
+    color: #5e5c64;
     padding: 8px 14px;
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     font-weight: 600;
 }
 
@@ -378,7 +389,7 @@ QHeaderView::section {
    -------------------------------------------------------------------------- */
 QCheckBox, QRadioButton {
     spacing: 12px;
-    color: #ffffff;
+    color: #1e1e1e;
     font-weight: 500;
     padding: 4px 0px;
 }
@@ -386,9 +397,9 @@ QCheckBox, QRadioButton {
 QCheckBox::indicator, QRadioButton::indicator {
     width: 20px;
     height: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
 }
 
 QRadioButton::indicator {
@@ -397,7 +408,7 @@ QRadioButton::indicator {
 
 QCheckBox::indicator:hover, QRadioButton::indicator:hover {
     border-color: #3584e4;
-    background-color: rgba(255, 255, 255, 0.14);
+    background-color: #f6f5f4;
 }
 
 QCheckBox::indicator:checked, QRadioButton::indicator:checked {
@@ -409,12 +420,12 @@ QCheckBox::indicator:checked, QRadioButton::indicator:checked {
    10. Cartes de choix de partitionnement (Style AdwActionRow interactif)
    -------------------------------------------------------------------------- */
 ChoicePage, QWidget#ChoicePage {
-    background-color: #242424;
+    background-color: #fafafa;
 }
 
 ChoicePage QRadioButton {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 14px 18px;
     margin: 6px 0px;
@@ -423,33 +434,35 @@ ChoicePage QRadioButton {
 }
 
 ChoicePage QRadioButton:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.16);
+    background-color: #f9f9f9;
+    border-color: rgba(0, 0, 0, 0.16);
 }
 
 ChoicePage QRadioButton:checked {
     border: 2px solid #3584e4;
-    background-color: rgba(53, 132, 228, 0.12);
+    background-color: rgba(53, 132, 228, 0.06);
 }
 
 /* --------------------------------------------------------------------------
-   11. Barre de progression (AdwProgressBar mince et plate)
+   11. Barre de progression (Style pilule moderne avec texte/pourcentage net)
    -------------------------------------------------------------------------- */
-QProgressBar {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 4px;
+QProgressBar, QProgressBar#progressBar {
+    background-color: #e4e4e4;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     text-align: center;
-    color: #ffffff;
-    font-weight: 600;
-    height: 8px;
-    min-height: 8px;
-    max-height: 8px;
+    color: #1e1e1e;
+    font-size: 12px;
+    font-weight: 700;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    padding: 0px;
 }
 
-QProgressBar::chunk {
+QProgressBar::chunk, QProgressBar#progressBar::chunk {
     background-color: #3584e4;
-    border-radius: 4px;
+    border-radius: 11px;
 }
 
 /* --------------------------------------------------------------------------
@@ -463,13 +476,13 @@ QScrollBar:vertical {
 }
 
 QScrollBar::handle:vertical {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.2);
     min-height: 32px;
     border-radius: 3px;
 }
 
 QScrollBar::handle:vertical:hover {
-    background: rgba(255, 255, 255, 0.45);
+    background: rgba(0, 0, 0, 0.38);
 }
 
 QScrollBar:horizontal {
@@ -480,13 +493,13 @@ QScrollBar:horizontal {
 }
 
 QScrollBar::handle:horizontal {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.2);
     min-width: 32px;
     border-radius: 3px;
 }
 
 QScrollBar::handle:horizontal:hover {
-    background: rgba(255, 255, 255, 0.45);
+    background: rgba(0, 0, 0, 0.38);
 }
 
 QScrollBar::add-line, QScrollBar::sub-line {
@@ -500,7 +513,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
    -------------------------------------------------------------------------- */
 QTabBar::tab {
     background-color: transparent;
-    color: #9a9996;
+    color: #5e5c64;
     padding: 8px 18px;
     border-radius: 8px;
     margin: 3px 4px;
@@ -508,13 +521,13 @@ QTabBar::tab {
 }
 
 QTabBar::tab:hover:!selected {
-    background-color: rgba(255, 255, 255, 0.06);
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
 }
 
 QTabBar::tab:selected {
-    background-color: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1e1e1e;
     font-weight: 600;
 }
 
@@ -523,7 +536,7 @@ QTabBar::tab:selected {
    -------------------------------------------------------------------------- */
 QSlider::groove:horizontal {
     height: 6px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.12);
     border-radius: 3px;
 }
 
@@ -534,7 +547,7 @@ QSlider::sub-page:horizontal {
 
 QSlider::handle:horizontal {
     background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.25);
     width: 18px;
     height: 18px;
     margin: -6px 0;
@@ -549,24 +562,24 @@ QSlider::handle:horizontal:hover {
    15. Boîtes de dialogue, Infobulles et Menus contextuels (AdwDialog / Popover)
    -------------------------------------------------------------------------- */
 QDialog, QMessageBox {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 12px;
 }
 
 QToolTip {
-    background-color: #2e2e2e;
+    background-color: #303030;
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     padding: 6px 10px;
     font-size: 12px;
 }
 
 QMenu {
-    background-color: #2e2e2e;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
     border-radius: 10px;
     padding: 6px;
 }
@@ -585,12 +598,12 @@ QMenu::item:selected {
    16. Page de sélection du mode d'installation (PackageChooser)
    -------------------------------------------------------------------------- */
 #packageChooserPage, QWidget#PackageChooserPage {
-    background-color: #242424;
+    background-color: #fafafa;
 }
 
 #packageChooserPage QListView {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 8px;
     min-width: 270px;
@@ -601,13 +614,13 @@ QMenu::item:selected {
     padding: 12px 16px;
     border-radius: 8px;
     margin: 4px 0px;
-    color: #deddda;
+    color: #1e1e1e;
     font-weight: 500;
 }
 
 #packageChooserPage QListView::item:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
 }
 
 #packageChooserPage QListView::item:selected {
@@ -624,7 +637,7 @@ QMenu::item:selected {
 }
 
 #packageChooserPage QLabel#descriptionLabel {
-    color: #9a9996;
+    color: #5e5c64;
     font-size: 13px;
     padding: 10px;
 }
@@ -633,7 +646,7 @@ QMenu::item:selected {
    17. Page de création d'utilisateur (UsersPage)
    -------------------------------------------------------------------------- */
 QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
-    color: #f66151;
+    color: #c01c28;
     font-weight: 600;
     font-size: 12px;
 }
@@ -642,23 +655,23 @@ QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
    18. Page de résumé (SummaryPage) & Page de fin (FinishedPage)
    -------------------------------------------------------------------------- */
 #summaryPage, QWidget#SummaryPage {
-    background-color: #242424;
+    background-color: #fafafa;
 }
 
 #summaryWidget, #summaryTextBrowser {
-    background-color: #2e2e2e;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     padding: 12px;
-    color: #deddda;
+    color: #1e1e1e;
 }
 
 #finishedPage, QWidget#FinishedPage {
-    background-color: #242424;
+    background-color: #fafafa;
 }
 
 #finishedPage QLabel#finishedText {
     font-size: 14px;
-    color: #deddda;
+    color: #3d3d3d;
     line-height: 1.5;
 }
