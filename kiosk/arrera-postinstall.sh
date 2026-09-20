@@ -1,0 +1,63 @@
+#!/bin/bash
+# ==============================================================================
+# Arrera Linux - Finalisation post-installation (exécuté en chroot cible)
+# ==============================================================================
+set -e
+
+INSTALL_MODE="${1:-online}"
+echo "=========================================================="
+echo "   Arrera Linux - Finalisation post-installation"
+echo "=========================================================="
+echo "Mode d'installation sélectionné : $INSTALL_MODE"
+
+# 1. Vérification du mode d'installation et de la connectivité réseau
+IS_ONLINE=0
+if [ "$INSTALL_MODE" = "offline" ]; then
+    echo "[1/4] Mode hors-ligne choisi par l'utilisateur. Aucune mise à jour réseau."
+else
+    echo "[1/4] Mode en ligne sélectionné. Test de la connectivité Internet..."
+    if ping -c 1 -W 3 1.1.1.1 >/dev/null 2>&1 || ping -c 1 -W 3 8.8.8.8 >/dev/null 2>&1; then
+        IS_ONLINE=1
+        echo "-> Connexion Internet active et confirmée."
+    else
+        echo "-> ATTENTION : Mode en ligne demandé mais aucune connexion Internet détectée."
+        echo "-> Poursuite de l'installation en mode hors-ligne."
+    fi
+fi
+
+# 2. Mise à jour DNF complète si en mode en ligne et connecté
+if [ "$IS_ONLINE" -eq 1 ]; then
+    echo "[2/4] Mise à jour complète de tous les paquets du système via DNF..."
+    dnf clean all || true
+    dnf makecache -y || true
+    dnf upgrade -y --refresh || true
+else
+    echo "[2/4] Étape réseau ignorée (installation hors-ligne)."
+fi
+
+# 3. Application des réglages d'environnement Arrera
+echo "[3/4] Application des réglages par défaut Arrera..."
+if [ -d "/etc/dconf/db/local.d" ]; then
+    dconf update || true
+fi
+
+# Régénération du cache des icônes si présent
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+fi
+
+# 4. Nettoyage des résidus Live / Kiosque et activation du bureau GNOME
+echo "[4/4] Activation de GNOME et nettoyage des unités d'installation..."
+systemctl enable gdm || true
+systemctl set-default graphical.target || true
+rm -f /etc/systemd/system/arrera-kiosk.service
+rm -f /etc/systemd/system/multi-user.target.wants/arrera-kiosk.service
+rm -f /etc/gdm/custom.conf
+rm -f /home/*/Bureau/install-*.desktop /home/*/.config/autostart/install-*.desktop /etc/xdg/autostart/install-*.desktop
+rm -rf /root/install.log /var/log/calamares*
+rm -f /usr/bin/arrera-postinstall.sh
+
+echo "=========================================================="
+echo "   Post-installation Arrera terminée avec succès !"
+echo "=========================================================="
+exit 0

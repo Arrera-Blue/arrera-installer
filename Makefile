@@ -38,6 +38,7 @@ test: validate
 validate:
 	@echo "=== [1/4] Validation syntaxique des scripts Bash ==="
 	@bash -n kiosk/arrera-installer-kiosk.sh
+	@bash -n kiosk/arrera-postinstall.sh
 	@echo "-> Scripts Bash valides."
 	@echo "=== [2/4] Validation des fichiers de configuration Calamares (YAML) ==="
 	@python3 -c "import yaml, glob; \
@@ -79,8 +80,9 @@ install:
 	install -m 0644 branding/arrera/slideshow/*.qml $(DESTDIR)$(BRANDING_DIR)/
 	cp -a branding/arrera/slideshow/* $(DESTDIR)$(BRANDING_DIR)/slideshow/
 
-	# Mode Kiosque
+	# Mode Kiosque et post-installation
 	install -m 0755 kiosk/arrera-installer-kiosk.sh $(DESTDIR)$(BINDIR)/arrera-installer-kiosk.sh
+	install -m 0755 kiosk/arrera-postinstall.sh $(DESTDIR)$(BINDIR)/arrera-postinstall.sh
 	install -m 0644 kiosk/arrera-kiosk.service $(DESTDIR)$(UNITDIR)/arrera-kiosk.service
 
 	# Raccourci Desktop

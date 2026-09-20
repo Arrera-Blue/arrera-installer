@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        12%{?dist}
+Release:        14%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Blue
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Blue
 
@@ -77,10 +77,16 @@ Arrera Blue, including:
 %dir %{_datadir}/calamares/qml
 %{_datadir}/calamares/branding/arrera/
 %{_bindir}/arrera-installer-kiosk.sh
+%{_bindir}/arrera-postinstall.sh
 %{_unitdir}/arrera-kiosk.service
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
+* Sun Sep 20 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-13
+- Move post-install bash logic to dedicated /usr/bin/arrera-postinstall.sh script
+  Avoids Calamares shellprocess variable expansion errors where bash variables
+  like $INSTALL_MODE and $IS_ONLINE were incorrectly parsed as missing Calamares macros.
+
 * Sun Sep 20 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-12
 - Switch installer theme to GTK 4 / Libadwaita Light across all components
   (window #fafafa, sidebar #ebebeb, boxed cards #ffffff, crisp dark typography #1e1e1e)
