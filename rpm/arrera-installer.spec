@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        14%{?dist}
+Release:        15%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Blue
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Blue
 
