@@ -161,29 +161,16 @@ fi
 ln -sf ../boot/grub2/grub.cfg /etc/grub2.cfg 2>/dev/null || true
 ln -sf ../boot/grub2/grub.cfg /etc/grub2-efi.cfg 2>/dev/null || true
 
-# Configuration et sécurisation de l'amorçage UEFI (Multi-architecture x86_64 & aarch64)
-TARGET_ARCH=$(uname -m)
-case "$TARGET_ARCH" in
-    aarch64|arm64)
-        SHIM_BIN="shimaa64.efi"
-        GRUB_BIN="grubaa64.efi"
-        FALLBACK_BIN="BOOTAA64.EFI"
-        MM_BIN="mmaa64.efi"
-        FB_BIN="fbaa64.efi"
-        CSV_BIN="BOOTAA64.CSV"
-        ;;
-    x86_64|amd64|*)
-        SHIM_BIN="shimx64.efi"
-        GRUB_BIN="grubx64.efi"
-        FALLBACK_BIN="BOOTX64.EFI"
-        MM_BIN="mmx64.efi"
-        FB_BIN="fbx64.efi"
-        CSV_BIN="BOOTX64.CSV"
-        ;;
-esac
+# Configuration et sécurisation de l'amorçage UEFI (x86_64)
+SHIM_BIN="shimx64.efi"
+GRUB_BIN="grubx64.efi"
+FALLBACK_BIN="BOOTX64.EFI"
+MM_BIN="mmx64.efi"
+FB_BIN="fbx64.efi"
+CSV_BIN="BOOTX64.CSV"
 
 if [ -d /sys/firmware/efi ] || [ -d /boot/efi ] || grep -q '/boot/efi' /etc/fstab 2>/dev/null; then
-    echo "-> Système UEFI détecté ($TARGET_ARCH) : finalisation de la partition ESP..."
+    echo "-> Système UEFI x86_64 détecté : finalisation de la partition ESP..."
     
     # S'assurer que /boot/efi est bien monté (crucial dans le chroot Calamares)
     if ! mountpoint -q /boot/efi; then
@@ -221,15 +208,7 @@ if [ -d /sys/firmware/efi ] || [ -d /boot/efi ] || grep -q '/boot/efi' /etc/fsta
         [ -n "$FOUND_GRUB" ] && cp -f "$FOUND_GRUB" "/boot/efi/EFI/fedora/$GRUB_BIN" 2>/dev/null || true
     fi
 
-    # Fallback ARM64 : si les binaires EFI sont toujours absents, forcer grub2-install
-    if [ "$TARGET_ARCH" = "aarch64" ] && [ ! -f "/boot/efi/EFI/fedora/$GRUB_BIN" ]; then
-        echo "-> ARM64 : binaires EFI absents, exécution de grub2-install en fallback..."
-        if command -v grub2-install >/dev/null 2>&1; then
-            grub2-install --target=arm64-efi --efi-directory=/boot/efi --bootloader-id=fedora --removable 2>/dev/null || true
-        fi
-    fi
-
-    # Création du chemin de secours amovible /EFI/BOOT/ (indispensable VM ARM64 & firmwares sans NVRAM)
+    # Création du chemin de secours amovible /EFI/BOOT/ (indispensable firmwares sans NVRAM)
     if [ -f "/boot/efi/EFI/fedora/$SHIM_BIN" ]; then
         cp -f "/boot/efi/EFI/fedora/$SHIM_BIN" "/boot/efi/EFI/BOOT/$FALLBACK_BIN" 2>/dev/null || true
     elif [ -f "/usr/share/arrera-efi/EFI/BOOT/$FALLBACK_BIN" ]; then
