@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        1%{?dist}
+Release:        5%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Blue
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Blue
 
@@ -19,7 +19,11 @@ Requires:       squashfs-tools
 Requires:       rsync
 Requires:       dosfstools
 Requires:       e2fsprogs
+Requires:       efibootmgr
 Requires:       grub2-tools
+Requires:       grub2-tools-extra
+Requires:       systemd-boot-unsigned
+Requires:       systemd-udev
 Requires:       polkit
 Requires:       systemd
 Requires:       dnf
@@ -33,9 +37,9 @@ Suggests:       openbox
 Ce paquet fournit la configuration complète de Calamares pour Arrera Blue,
 incluant :
 - Le pipeline d'installation adapté à Fedora (x86_64 et aarch64)
-- Le branding visuel Arrera Blue (thème QSS sombre/bleu, logo vectoriel, diaporama QML)
+- Le branding visuel Arrera Blue (thème QSS clair Libadwaita, logo, diaporama QML)
 - La gestion des utilisateurs (appartenance automatique au groupe wheel)
-- La configuration du chargeur d'amorçage GRUB2 (EFI et BIOS)
+- L'amorçage hybride : GRUB2 + Shim (Secure Boot officiel x86_64) et systemd-boot (aarch64)
 - Le script post-installation de rafraîchissement des dépôts Arrera et DNF
 - La session kiosque légère (cage/Wayland) pour média Live
 
@@ -43,9 +47,9 @@ incluant :
 This package provides the complete Calamares installer configuration for
 Arrera Blue, including:
 - Optimized Fedora installation pipeline (x86_64 and aarch64)
-- Visual Arrera branding (dark/blue QSS theme, vector logo, QML slideshow)
+- Visual Arrera branding (Libadwaita Light theme, vector logo, QML slideshow)
 - User account management (automatic wheel group membership)
-- GRUB2 bootloader configuration (EFI & BIOS)
+- Hybrid bootloader: GRUB2 + Shim (Microsoft Secure Boot on x86_64) and systemd-boot (aarch64)
 - Post-install script for Arrera repositories and DNF update
 - Lightweight kiosk session (cage/Wayland) for Live media
 
@@ -82,6 +86,19 @@ Arrera Blue, including:
 %{_datadir}/applications/calamares-arrera.desktop
 
 %changelog
+* Sat Sep 26 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-15
+- Implement hybrid bootloader architecture:
+  * x86_64: GRUB2 + Shim (Microsoft signed UEFI CA for out-of-the-box Secure Boot)
+  * aarch64: systemd-boot (UEFI native, bypasses Calamares ARM64 shimx64 bug)
+- Update arrera-postinstall.sh with architecture detection for UEFI/NVRAM configuration
+- Add both grub2-tools and systemd-boot-unsigned to requirements
+
+* Fri Sep 25 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-14
+- Migrate bootloader backend from GRUB2 to systemd-boot
+- Configure ESP to /boot with 1024MB default size in partition.conf
+- Replace grub2-tools requirement with systemd-boot-unsigned and systemd-udev
+- Fix Calamares ARM64 crash by eliminating hardcoded shimx64.efi lookup
+
 * Sun Sep 20 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-13
 - Move post-install bash logic to dedicated /usr/bin/arrera-postinstall.sh script
   Avoids Calamares shellprocess variable expansion errors where bash variables
