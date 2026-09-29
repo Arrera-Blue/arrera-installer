@@ -39,6 +39,8 @@ validate:
 	@echo "=== [1/4] Validation syntaxique des scripts Bash ==="
 	@bash -n kiosk/arrera-installer-kiosk.sh
 	@bash -n kiosk/arrera-postinstall.sh
+	@bash -n build.sh
+	@bash -n debug.sh
 	@echo "-> Scripts Bash valides."
 	@echo "=== [2/4] Validation des fichiers de configuration Calamares (YAML) ==="
 	@python3 -c "import yaml, glob; \

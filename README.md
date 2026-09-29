@@ -104,18 +104,19 @@ Le [Makefile](file:///home/baptistep/Documents/arrera-linux/arrera-installer/Mak
 
 ---
 
-## 🧪 Tester l'installateur localement
+## 🧪 Tester l'installateur localement & en VM de test
 
-### 1. Tester l'interface Calamares en mode fenêtré
-Si Calamares est installé sur votre machine hôte Fedora :
-```bash
-sudo calamares -d -c ./config/settings.conf
-```
+Le script [debug.sh](file:///home/baptistep/arrera-installer/debug.sh) installe automatiquement les dépendances requises (Calamares, Cage, polices, thèmes), déploie la configuration et démarre Calamares en mode debug :
 
-### 2. Tester la session kiosque dans une machine virtuelle ou un terminal
-Le script `arrera-installer-kiosk.sh` peut être exécuté dans un TTY virtuel ou via une VM QEMU/KVM :
 ```bash
-sudo ./kiosk/arrera-installer-kiosk.sh
+# Test complet (installe les paquets manquants si besoin et lance l'interface en mode fenêtré) :
+./debug.sh
+
+# Tester la session Kiosque plein écran (Cage / Wayland, identique à l'ISO) :
+./debug.sh --kiosk
+
+# Uniquement préparer l'environnement sans lancer l'installateur :
+./debug.sh --setup-only
 ```
 
 ---
