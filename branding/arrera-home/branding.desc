@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 Baptiste P <contact@arrera-software.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+---
+componentName:  arrera-home
+
+### WELCOME / OVERALL WORDING
+welcomeStyleCalamares:   false
+welcomeExpandingLogo:    true
+
+### WINDOW CONFIGURATION
+windowExpanding:    normal
+windowSize:         1060px,680px
+windowPlacement:    center
+
+### PANELS CONFIGURATION
+sidebar:    widget
+navigation: widget
+
+### STRINGS, IMAGES AND COLORS
+strings:
+    productName:         "Arrera Blue Édition Home"
+    version:             "2026"
+    shortVersion:        "2026"
+    shortProductName:    "Arrera Blue Home"
+    versionedName:       "Arrera Blue Édition Home 2026"
+    shortVersionedName:  "Arrera Blue Home 2026"
+    bootloaderEntryName: "Arrera Blue Edition Home"
+    productUrl:          "https://github.com/Arrera-Software"
+    supportUrl:          "https://github.com/Arrera-Software"
+    knownIssuesUrl:      "https://github.com/Arrera-Software"
+    releaseNotesUrl:     "https://github.com/Arrera-Software"
+    donateUrl:           ""
+
+images:
+    productLogo:         "arrera-logo.png"
+    productIcon:         "arrera-logo.png"
+    productWelcome:      "arrera-logo.svg"
+
+### SLIDESHOW
+slideshow:     "slideshow.qml"
+slideshowAPI:  2
+
+### SIDEBAR COLORS (Palette GNOME Libadwaita Light - Accent Blue)
+style:
+    SidebarBackground:        "#ebebeb"
+    SidebarBackgroundCurrent: "#3584e4"
+    SidebarText:              "#5e5c64"
+    SidebarTextCurrent:       "#ffffff"

@@ -109,17 +109,20 @@ Le [Makefile](file:///home/baptistep/Documents/arrera-linux/arrera-installer/Mak
 Le script [debug.sh](file:///home/baptistep/arrera-installer/debug.sh) installe automatiquement les dépendances requises (Calamares, Cage, polices, thèmes), déploie la configuration et démarre Calamares en mode debug :
 
 ```bash
-# Test complet en mode standard (fenêtré) :
-./debug.sh
+# Tester l'édition Home (thème clair blanc, accent GNOME Blue) en mode simulation sécurisé :
+./debug.sh --edition home --dry-run
 
-# Mode SIMULATION SÉCURISÉ (aucun formatage ni écriture disque même en cliquant sur Installer) :
-./debug.sh --dry-run
+# Tester l'édition Éducation (thème clair blanc, accent GNOME Turquoise, diaporama scolaire) :
+./debug.sh --edition education --dry-run
+
+# Tester l'édition Serveur (thème clair blanc, accent GNOME Black, diaporama Cockpit/Podman) :
+./debug.sh --edition server --dry-run
+
+# Tester l'édition Entreprise (thème clair blanc, accent GNOME Purple, diaporama pro/Active Directory) :
+./debug.sh --edition enterprise --dry-run
 
 # Tester la session Kiosque plein écran (Cage / Wayland, identique à l'ISO) :
-./debug.sh --kiosk
-
-# Uniquement préparer l'environnement sans lancer l'installateur :
-./debug.sh --setup-only
+./debug.sh --edition home --kiosk
 ```
 
 ---
@@ -151,9 +154,20 @@ Dans le fichier Kickstart (`.ks`) utilisé par `livemedia-creator` ou `lorax` :
 # Dépôt Arrera
 repo --name=copr-arrera-blue --baseurl=https://download.copr.fedorainfracloud.org/results/baptistep/copr-arrera-blue/fedora-$releasever-$basearch/
 
-# Paquets de l'installateur
+# Paquets de l'installateur (choisir le paquet selon l'édition de l'ISO) :
 %packages
-arrera-installer
+# Pour l'édition Home :
+arrera-installer-home
+
+# OU pour l'édition Éducation :
+# arrera-installer-education
+
+# OU pour l'édition Serveur :
+# arrera-installer-server
+
+# OU pour l'édition Entreprise :
+# arrera-installer-enterprise
+
 calamares
 cage
 %end

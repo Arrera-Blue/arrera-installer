@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 Baptiste P <contact@arrera-software.org>
+# SPDX-License-Identifier: GPL-3.0-or-later
+---
+componentName:  arrera-education
+
+### WELCOME / OVERALL WORDING
+welcomeStyleCalamares:   false
+welcomeExpandingLogo:    true
+
+### WINDOW CONFIGURATION
+windowExpanding:    normal
+windowSize:         1060px,680px
+windowPlacement:    center
+
+### PANELS CONFIGURATION
+sidebar:    widget
+navigation: widget
+
+### STRINGS, IMAGES AND COLORS
+strings:
+    productName:         "Arrera Blue Édition Éducation"
+    version:             "2026"
+    shortVersion:        "2026"
+    shortProductName:    "Arrera Blue Éducation"
+    versionedName:       "Arrera Blue Édition Éducation 2026"
+    shortVersionedName:  "Arrera Blue Éducation 2026"
+    bootloaderEntryName: "Arrera Blue Edition Education"
+    productUrl:          "https://github.com/Arrera-Software"
+    supportUrl:          "https://github.com/Arrera-Software"
+    knownIssuesUrl:      "https://github.com/Arrera-Software"
+    releaseNotesUrl:     "https://github.com/Arrera-Software"
+    donateUrl:           ""
+
+images:
+    productLogo:         "arrera-logo.png"
+    productIcon:         "arrera-logo.png"
+    productWelcome:      "arrera-logo.svg"
+
+### SLIDESHOW
+slideshow:     "slideshow.qml"
+slideshowAPI:  2
+
+### SIDEBAR COLORS (Palette GNOME Libadwaita Light - Accent Turquoise)
+style:
+    SidebarBackground:        "#ebebeb"
+    SidebarBackgroundCurrent: "#21a48c"
+    SidebarText:              "#5e5c64"
+    SidebarTextCurrent:       "#ffffff"

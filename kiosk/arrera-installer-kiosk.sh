@@ -108,14 +108,14 @@ plymouth quit 2>/dev/null || true
 
 # 1. Exécution avec Cage (Compositeur Wayland Kiosque plein écran)
 if command -v cage >/dev/null 2>&1; then
-    cage -s -- "$CALAMARES_BIN" -d || true
+    cage -s -- "$CALAMARES_BIN" -d -c /etc/calamares || true
     on_exit_prompt
     exit 0
 fi
 
 # 2. Fallback avec Sway si présent
 if command -v sway >/dev/null 2>&1; then
-    sway --config /dev/null -c "$CALAMARES_BIN -d" || true
+    sway --config /dev/null -c "$CALAMARES_BIN -d -c /etc/calamares" || true
     on_exit_prompt
     exit 0
 fi
@@ -123,12 +123,12 @@ fi
 # 3. Fallback X11 (Openbox / xinit)
 if command -v xinit >/dev/null 2>&1; then
     export DISPLAY="${DISPLAY:-:0}"
-    xinit "$CALAMARES_BIN" -d -- :0 vt1 || true
+    xinit "$CALAMARES_BIN" -d -c /etc/calamares -- :0 vt1 || true
     on_exit_prompt
     exit 0
 fi
 
 # 4. Lancement direct (si un serveur graphique tourne déjà)
-"$CALAMARES_BIN" -d || true
+"$CALAMARES_BIN" -d -c /etc/calamares || true
 on_exit_prompt
 exit 0

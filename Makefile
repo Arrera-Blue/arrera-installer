@@ -44,7 +44,7 @@ validate:
 	@echo "-> Scripts Bash valides."
 	@echo "=== [2/4] Validation des fichiers de configuration Calamares (YAML) ==="
 	@python3 -c "import yaml, glob; \
-		files = glob.glob('config/*.conf') + glob.glob('config/modules/*.conf') + glob.glob('branding/arrera/*.desc'); \
+		files = glob.glob('config/*.conf') + glob.glob('config/modules/*.conf') + glob.glob('branding/*/*.desc'); \
 		[yaml.safe_load(open(f)) for f in files]; \
 		print(f'-> {len(files)} fichiers YAML/desc validés avec succès.')"
 	@echo "=== [3/4] Validation du fichier .desktop ==="
@@ -65,22 +65,21 @@ install:
 	@echo "Installation vers $(DESTDIR)..."
 	# Répertoires cibles
 	install -d -m 0755 $(DESTDIR)$(CALAMARES_DIR)/modules
-	install -d -m 0755 $(DESTDIR)$(BRANDING_DIR)/slideshow
+	install -d -m 0755 $(DESTDIR)$(CALAMARES_DIR)/qml
+	install -d -m 0755 $(DESTDIR)$(DATADIR)/calamares/branding
 	install -d -m 0755 $(DESTDIR)$(DATADIR)/calamares/qml
 	install -d -m 0755 $(DESTDIR)$(BINDIR)
 	install -d -m 0755 $(DESTDIR)$(UNITDIR)
 	install -d -m 0755 $(DESTDIR)$(APPDIR)
 
-	# Configuration Calamares
-	install -m 0644 config/settings.conf $(DESTDIR)$(CALAMARES_DIR)/settings.conf
+	# Configuration Calamares commune et par édition
+	install -m 0644 config/*.conf $(DESTDIR)$(CALAMARES_DIR)/
 	install -m 0644 config/modules/*.conf $(DESTDIR)$(CALAMARES_DIR)/modules/
 
-	install -m 0644 branding/arrera/branding.desc $(DESTDIR)$(BRANDING_DIR)/branding.desc
-	install -m 0644 branding/arrera/stylesheet.qss $(DESTDIR)$(BRANDING_DIR)/stylesheet.qss
-	install -m 0644 branding/arrera/arrera-logo.svg $(DESTDIR)$(BRANDING_DIR)/arrera-logo.svg
-	install -m 0644 branding/arrera/*.png $(DESTDIR)$(BRANDING_DIR)/
-	install -m 0644 branding/arrera/slideshow/*.qml $(DESTDIR)$(BRANDING_DIR)/
-	cp -a branding/arrera/slideshow/* $(DESTDIR)$(BRANDING_DIR)/slideshow/
+	# Installation de tous les brandings (arrera, arrera-home, arrera-education, arrera-server, arrera-enterprise)
+	cp -a branding/* $(DESTDIR)$(DATADIR)/calamares/branding/
+	ln -sfn $(DATADIR)/calamares/branding $(DESTDIR)$(CALAMARES_DIR)/branding
+	ln -sfn $(DATADIR)/calamares/qml $(DESTDIR)$(CALAMARES_DIR)/qml
 
 	# Mode Kiosque et post-installation
 	install -m 0755 kiosk/arrera-installer-kiosk.sh $(DESTDIR)$(BINDIR)/arrera-installer-kiosk.sh

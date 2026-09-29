@@ -1,0 +1,677 @@
+/* ==========================================================================
+   Arrera Blue Édition Serveur - Thème Calamares GNOME Light (Accent Black)
+   Fidèle aux spécifications de design GNOME 46+ et Libadwaita (Thème Clair)
+   Palette officielle :
+     - Fenêtre (@window_bg_color)       : #fafafa
+     - Barre latérale (@view_bg_color)   : #ebebeb
+     - Cartes & Listes (@card_bg_color)  : #ffffff
+     - En-tête / Action                  : #fafafa
+     - Bordure subtile                   : rgba(0, 0, 0, 0.08)
+     - Bordure forte                     : rgba(0, 0, 0, 0.15)
+     - Texte principal                   : #1e1e1e
+     - Texte secondaire (@dim_label)     : #5e5c64
+     - Accent GNOME Black 3               : #303030
+     - Accent Survol GNOME Black 2        : #3d3d3d
+     - Accent Actif GNOME Black 4         : #1a1a1a
+     - Destructif (Rouge Adwaita)        : #c01c28 / #e01b24
+     - Succès (Vert Adwaita)             : #26a269
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Base globale & Typographie GNOME Cantarell
+   -------------------------------------------------------------------------- */
+QWidget {
+    background-color: #fafafa;
+    color: #1e1e1e;
+    font-family: "Adwaita Sans", "Cantarell", "Inter", "Segoe UI", sans-serif;
+    font-size: 13px;
+    selection-background-color: #303030;
+    selection-color: #ffffff;
+    outline: none;
+}
+
+QMainWindow, QDialog {
+    background-color: #fafafa;
+    color: #1e1e1e;
+}
+
+/* Zone centrale d'affichage des étapes Calamares */
+#mainView, #viewManager, QStackedWidget {
+    background-color: #fafafa;
+    border: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. Barre latérale (Style AdwNavigationSplitView)
+   -------------------------------------------------------------------------- */
+#sidebarApp {
+    background-color: #ebebeb;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    min-width: 240px;
+    max-width: 260px;
+}
+
+#sidebarWidget {
+    background-color: transparent;
+    border: none;
+}
+
+/* Logo de marque en haut de la barre latérale (#logoApp dans Calamares) */
+#logoApp, QLabel#logoApp {
+    background-color: transparent;
+    border: none;
+    border-radius: 0px;
+    margin: 24px auto 14px auto;
+    padding: 0px;
+    min-height: 80px;
+    max-height: 80px;
+    min-width: 80px;
+    max-width: 80px;
+    qproperty-alignment: AlignCenter;
+}
+
+/* Étapes de progression dans la barre latérale (ProgressTreeView) */
+#sidebarApp QTreeView, #sidebarApp ProgressTreeView {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+#sidebarApp QTreeView::item, #sidebarApp ProgressTreeView::item {
+    padding: 8px 14px;
+    border-radius: 8px;
+    margin: 2px 8px;
+    color: #5e5c64;
+}
+
+#sidebarApp QTreeView::item:hover, #sidebarApp ProgressTreeView::item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #1e1e1e;
+}
+
+#sidebarApp QTreeView::item:selected, #sidebarApp ProgressTreeView::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Boutons utilitaires en bas de la sidebar (À propos, Journal de débogage) */
+#sidebarApp QPushButton {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #5e5c64;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    min-height: 22px;
+    margin: 4px 12px;
+}
+
+#sidebarApp QPushButton:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1e1e1e;
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+#sidebarApp QPushButton:pressed {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   3. Barre d'action inférieure (Navigation / AdwBottomBar)
+   -------------------------------------------------------------------------- */
+#navigationWidget {
+    background-color: #fafafa;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 14px 24px;
+    min-height: 48px;
+}
+
+/* Boutons standards (AdwButton - Pilules Libadwaita Light) */
+QPushButton {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    padding: 8px 22px;
+    min-height: 26px;
+    min-width: 80px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+QPushButton:hover {
+    background-color: #f2f2f2;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+QPushButton:pressed {
+    background-color: #e6e6e6;
+}
+
+QPushButton:disabled {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Bouton d'action suggérée (Suivant / Installer - .suggested-action Libadwaita) */
+QPushButton#nextButton, QPushButton[primary=true] {
+    background-color: #303030;
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+QPushButton#nextButton:hover, QPushButton[primary=true]:hover {
+    background-color: #3d3d3d;
+}
+
+QPushButton#nextButton:pressed, QPushButton[primary=true]:pressed {
+    background-color: #1a1a1a;
+}
+
+QPushButton#nextButton:disabled, QPushButton[primary=true]:disabled {
+    background-color: rgba(48, 48, 48, 0.35);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Bouton d'annulation (Action destructive douce) */
+QPushButton#cancelButton {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    color: #1e1e1e;
+}
+
+QPushButton#cancelButton:hover {
+    background-color: rgba(224, 27, 36, 0.08);
+    border: 1px solid rgba(224, 27, 36, 0.4);
+    color: #c01c28;
+}
+
+QPushButton#cancelButton:pressed {
+    background-color: #c01c28;
+    color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   4. Typographie, Titres et Sous-titres (Libadwaita Heading)
+   -------------------------------------------------------------------------- */
+QLabel {
+    background-color: transparent;
+    color: #1e1e1e;
+}
+
+QLabel#titleLabel, QLabel#welcomeLabel, QLabel#headerLabel {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e1e1e;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+QLabel#subTitleLabel {
+    font-size: 14px;
+    color: #5e5c64;
+    margin-bottom: 18px;
+}
+
+QLabel#explanationLabel, QLabel#descLabel {
+    font-size: 13px;
+    color: #3d3d3d;
+    line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   5. Cartes & Listes groupées (Libadwaita Boxed Lists & Cards)
+   -------------------------------------------------------------------------- */
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    font-weight: 600;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 12px;
+    top: 4px;
+    padding: 0 6px;
+    color: #5e5c64;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#requirementsBox, QFrame#requirementsBox, QWidget#requirementsWidget {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 10px 0px;
+}
+
+#requirementsBox QLabel {
+    font-size: 13px;
+    padding: 6px 0px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Menus déroulants (Sélecteurs de langue, fuseaux - Style AdwComboRow)
+   -------------------------------------------------------------------------- */
+QComboBox {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    padding: 8px 14px;
+    min-height: 24px;
+    font-weight: 500;
+}
+
+QComboBox:hover {
+    background-color: #f8f8f8;
+    border-color: rgba(0, 0, 0, 0.22);
+}
+
+QComboBox:focus {
+    border: 2px solid #303030;
+    padding: 7px 13px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 10px;
+    selection-background-color: #303030;
+    selection-color: #ffffff;
+    padding: 6px;
+    outline: none;
+}
+
+QComboBox QAbstractItemView::item {
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin: 1px 0px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   7. Champs de saisie (AdwEntryRow)
+   -------------------------------------------------------------------------- */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 8px;
+    padding: 9px 14px;
+    selection-background-color: #303030;
+    selection-color: #ffffff;
+}
+
+QLineEdit:hover, QTextEdit:hover, QPlainTextEdit:hover {
+    border-color: rgba(0, 0, 0, 0.24);
+    background-color: #fafafa;
+}
+
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+    border: 2px solid #303030;
+    background-color: #ffffff;
+    padding: 8px 13px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Listes, Arborescences & Tableaux (Boxed Lists Adwaita)
+   -------------------------------------------------------------------------- */
+QListView, QTreeView, QTableView {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    alternate-background-color: #f6f5f4;
+    padding: 6px;
+    outline: none;
+}
+
+QListView::item, QTreeView::item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 2px 0px;
+    color: #1e1e1e;
+}
+
+QListView::item:hover, QTreeView::item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
+}
+
+QListView::item:selected, QTreeView::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+QHeaderView::section {
+    background-color: #ebebeb;
+    color: #5e5c64;
+    padding: 8px 14px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   9. Cases à cocher et Boutons Radio (GTK 4 Toggles)
+   -------------------------------------------------------------------------- */
+QCheckBox, QRadioButton {
+    spacing: 12px;
+    color: #1e1e1e;
+    font-weight: 500;
+    padding: 4px 0px;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+QRadioButton::indicator {
+    border-radius: 10px;
+}
+
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border-color: #303030;
+    background-color: #f6f5f4;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #303030;
+    border-color: #303030;
+}
+
+/* --------------------------------------------------------------------------
+   10. Cartes de choix de partitionnement (Style AdwActionRow interactif)
+   -------------------------------------------------------------------------- */
+ChoicePage, QWidget#ChoicePage {
+    background-color: #fafafa;
+}
+
+ChoicePage QRadioButton {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 6px 0px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+ChoicePage QRadioButton:hover {
+    background-color: #f9f9f9;
+    border-color: rgba(0, 0, 0, 0.16);
+}
+
+ChoicePage QRadioButton:checked {
+    border: 2px solid #303030;
+    background-color: rgba(48, 48, 48, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   11. Barre de progression (Style pilule moderne avec texte/pourcentage net)
+   -------------------------------------------------------------------------- */
+QProgressBar, QProgressBar#progressBar {
+    background-color: #e4e4e4;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    text-align: center;
+    color: #1e1e1e;
+    font-size: 12px;
+    font-weight: 700;
+    height: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    padding: 0px;
+}
+
+QProgressBar::chunk, QProgressBar#progressBar::chunk {
+    background-color: #303030;
+    border-radius: 11px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Barres de défilement (Scrollbars fines flottantes GNOME)
+   -------------------------------------------------------------------------- */
+QScrollBar:vertical {
+    background: transparent;
+    width: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:vertical {
+    background: rgba(0, 0, 0, 0.2);
+    min-height: 32px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: rgba(0, 0, 0, 0.38);
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+    height: 6px;
+    margin: 0px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:horizontal {
+    background: rgba(0, 0, 0, 0.2);
+    min-width: 32px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: rgba(0, 0, 0, 0.38);
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    height: 0px;
+    width: 0px;
+    border: none;
+}
+
+/* --------------------------------------------------------------------------
+   13. Onglets (AdwViewSwitcher - Style Pilules)
+   -------------------------------------------------------------------------- */
+QTabBar::tab {
+    background-color: transparent;
+    color: #5e5c64;
+    padding: 8px 18px;
+    border-radius: 8px;
+    margin: 3px 4px;
+    font-weight: 500;
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
+}
+
+QTabBar::tab:selected {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #1e1e1e;
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   14. Curseur & Sliders (AdwScale)
+   -------------------------------------------------------------------------- */
+QSlider::groove:horizontal {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+}
+
+QSlider::sub-page:horizontal {
+    background: #303030;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    width: 18px;
+    height: 18px;
+    margin: -6px 0;
+    border-radius: 9px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: #f6f5f4;
+}
+
+/* --------------------------------------------------------------------------
+   15. Boîtes de dialogue, Infobulles et Menus contextuels (AdwDialog / Popover)
+   -------------------------------------------------------------------------- */
+QDialog, QMessageBox {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 12px;
+}
+
+QToolTip {
+    background-color: #303030;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+QMenu {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    border-radius: 10px;
+    padding: 6px;
+}
+
+QMenu::item {
+    padding: 8px 24px;
+    border-radius: 6px;
+}
+
+QMenu::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   16. Page de sélection du mode d'installation (PackageChooser)
+   -------------------------------------------------------------------------- */
+#packageChooserPage, QWidget#PackageChooserPage {
+    background-color: #fafafa;
+}
+
+#packageChooserPage QListView {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 270px;
+    font-size: 13px;
+}
+
+#packageChooserPage QListView::item {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 4px 0px;
+    color: #1e1e1e;
+    font-weight: 500;
+}
+
+#packageChooserPage QListView::item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: #1e1e1e;
+}
+
+#packageChooserPage QListView::item:selected {
+    background-color: #303030;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+#packageChooserPage QLabel#previewLabel,
+#packageChooserPage QLabel#screenshotLabel,
+#packageChooserPage QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+#packageChooserPage QLabel#descriptionLabel {
+    color: #5e5c64;
+    font-size: 13px;
+    padding: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   17. Page de création d'utilisateur (UsersPage)
+   -------------------------------------------------------------------------- */
+QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
+    color: #c01c28;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   18. Page de résumé (SummaryPage) & Page de fin (FinishedPage)
+   -------------------------------------------------------------------------- */
+#summaryPage, QWidget#SummaryPage {
+    background-color: #fafafa;
+}
+
+#summaryWidget, #summaryTextBrowser {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 12px;
+    color: #1e1e1e;
+}
+
+#finishedPage, QWidget#FinishedPage {
+    background-color: #fafafa;
+}
+
+#finishedPage QLabel#finishedText {
+    font-size: 14px;
+    color: #3d3d3d;
+    line-height: 1.5;
+}
