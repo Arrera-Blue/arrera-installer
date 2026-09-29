@@ -33,6 +33,7 @@ usage() {
     echo ""
     echo -e "${BOLD}Options :${NC}"
     echo -e "  ${GREEN}(sans option)${NC}      Installe si nécessaire, déploie et lance en mode fenêtré"
+    echo -e "  ${GREEN}--dry-run, --demo${NC}  Mode simulation SÉCURISÉ (désactive toute écriture disque lors de l'installation)"
     echo -e "  ${GREEN}--kiosk, -k${NC}        Force le lancement en mode kiosque plein écran (Cage / Wayland)"
     echo -e "  ${GREEN}--setup-only, -s${NC}   Installe les dépendances et déploie les fichiers sans lancer"
     echo -e "  ${GREEN}--no-deps${NC}          Saute la vérification/installation des paquets DNF"
@@ -55,9 +56,14 @@ fi
 MODE="window"
 SKIP_DEPS=0
 SETUP_ONLY=0
+DRY_RUN=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
+        --dry-run|--demo)
+            DRY_RUN=1
+            shift
+            ;;
         --kiosk|-k)
             MODE="kiosk"
             shift
@@ -144,9 +150,50 @@ if [ "$SETUP_ONLY" -eq 1 ]; then
 fi
 
 # ==============================================================================
-# 3. Lancement de Calamares en mode DEBUG
+# 3. Mode Simulation (--dry-run) : Neutralisation de la séquence d'exécution
 # ==============================================================================
-echo -e "\n${CYAN}--> [3/3] Démarrage de Calamares en mode debug (-d)...${NC}"
+restore_settings() {
+    if [ -f /etc/calamares/settings.conf.real_backup ]; then
+        echo -e "\n${CYAN}Restauration de la configuration de production /etc/calamares/settings.conf...${NC}"
+        $SUDO mv /etc/calamares/settings.conf.real_backup /etc/calamares/settings.conf
+    fi
+}
+
+if [ "$DRY_RUN" -eq 1 ]; then
+    echo -e "\n${GREEN}${BOLD}[MODE SIMULATION ACTIVÉ]${NC}"
+    echo -e "${GREEN}Toutes les opérations d'écriture disque réelles sont désactivées.${NC}"
+    echo -e "${GREEN}Vous pouvez tester l'ensemble du parcours et cliquer sur 'Installer' sans aucun risque pour le disque.${NC}"
+    
+    $SUDO cp /etc/calamares/settings.conf /etc/calamares/settings.conf.real_backup
+    trap restore_settings EXIT INT TERM
+
+    # Création d'une configuration sans la phase d'exécution destructrice
+    $SUDO python3 -c "
+import yaml
+with open('/etc/calamares/settings.conf', 'r') as f:
+    data = yaml.safe_load(f)
+# Neutralisation de la séquence exec
+data['sequence'] = [
+    step for step in data.get('sequence', [])
+    if 'exec' not in step
+]
+# Ajout d'une séquence exec vide pour valider la transition vers finished
+data['sequence'].append({'exec': []})
+data['sequence'].append({'show': ['finished']})
+with open('/etc/calamares/settings.conf', 'w') as f:
+    yaml.dump(data, f, default_flow_style=False)
+"
+else
+    echo -e "\n${YELLOW}${BOLD}[ATTENTION - MODE STANDARD]${NC}"
+    echo -e "${YELLOW}- Vous pouvez naviguer librement et configurer les partitions sans risque tant que vous ne cliquez pas sur 'Installer'.${NC}"
+    echo -e "${RED}- Si vous cliquez sur 'Installer maintenant' à la fin, LE DISQUE SÉLECTIONNÉ SERA RÉELLEMENT FORMATÉ !${NC}"
+    echo -e "${CYAN}- Astuce : Pour simuler une installation complète sans risque, relancez avec : ${BOLD}./debug.sh --dry-run${NC}\n"
+fi
+
+# ==============================================================================
+# 4. Lancement de Calamares en mode DEBUG
+# ==============================================================================
+echo -e "${CYAN}--> Démarrage de Calamares en mode debug (-d)...${NC}"
 
 # Permissions pour le serveur X11 si exécuté via sudo depuis un bureau utilisateur
 if [ -n "$DISPLAY" ] && command -v xhost >/dev/null 2>&1; then

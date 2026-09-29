@@ -109,8 +109,11 @@ Le [Makefile](file:///home/baptistep/Documents/arrera-linux/arrera-installer/Mak
 Le script [debug.sh](file:///home/baptistep/arrera-installer/debug.sh) installe automatiquement les dépendances requises (Calamares, Cage, polices, thèmes), déploie la configuration et démarre Calamares en mode debug :
 
 ```bash
-# Test complet (installe les paquets manquants si besoin et lance l'interface en mode fenêtré) :
+# Test complet en mode standard (fenêtré) :
 ./debug.sh
+
+# Mode SIMULATION SÉCURISÉ (aucun formatage ni écriture disque même en cliquant sur Installer) :
+./debug.sh --dry-run
 
 # Tester la session Kiosque plein écran (Cage / Wayland, identique à l'ISO) :
 ./debug.sh --kiosk
