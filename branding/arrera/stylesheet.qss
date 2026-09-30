@@ -651,6 +651,23 @@ QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
     font-size: 12px;
 }
 
+/* Édition Home : Masquage du bloc Nom de machine (fixé par défaut à "arrera") */
+#hostnameLabel, #labelChooseHostname, #labelHostname, #labelPickHostname, #labelWhatHostname,
+#textBoxHostName, #textBoxHostname, #labelHostnameError {
+    max-height: 0px;
+    min-height: 0px;
+    height: 0px;
+    max-width: 0px;
+    min-width: 0px;
+    width: 0px;
+    font-size: 0px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background: transparent;
+    color: transparent;
+}
+
 /* --------------------------------------------------------------------------
    18. Page de résumé (SummaryPage) & Page de fin (FinishedPage)
    -------------------------------------------------------------------------- */

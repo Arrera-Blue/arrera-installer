@@ -199,9 +199,6 @@ fi
 # Copie de sécurité explicite des fichiers QML vers /usr/share/calamares/branding/
 if [ -d "branding/arrera-${EDITION}" ]; then
     $SUDO cp -f branding/arrera-${EDITION}/*.qml "/usr/share/calamares/branding/arrera-${EDITION}/" 2>/dev/null || true
-    if [ -d "branding/arrera-${EDITION}/slideshow" ]; then
-        $SUDO cp -f branding/arrera-${EDITION}/slideshow/*.qml "/usr/share/calamares/branding/arrera-${EDITION}/" 2>/dev/null || true
-    fi
 fi
 
 # Liens symboliques directs pour garantir l'accès au branding et à qml depuis /etc/calamares

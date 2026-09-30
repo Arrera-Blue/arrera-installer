@@ -449,6 +449,31 @@ if [ -n "$OTHER_USER" ]; then
     rm -f /etc/sudoers.d/arrera
 fi
 
+# 7b. Configuration garantie du nom d'hôte (hostname) selon l'édition
+ED_BRANDING=""
+if [ -f /etc/calamares/settings.conf ]; then
+    ED_BRANDING=$(grep '^branding:' /etc/calamares/settings.conf 2>/dev/null | awk '{print $2}')
+fi
+
+TARGET_HOSTNAME=""
+if [ "$ED_BRANDING" = "arrera-education" ] || grep -q "^parents:" /etc/passwd 2>/dev/null; then
+    TARGET_HOSTNAME="arrera-school"
+elif [ "$ED_BRANDING" = "arrera-home" ] || [ "$ED_BRANDING" = "arrera" ]; then
+    TARGET_HOSTNAME="arrera"
+fi
+
+if [ -n "$TARGET_HOSTNAME" ]; then
+    echo "-> Configuration officielle du nom d'hôte ($TARGET_HOSTNAME)..."
+    echo "$TARGET_HOSTNAME" > /etc/hostname
+    if [ -f /etc/hosts ]; then
+        sed -i "/127.0.1.1/d" /etc/hosts 2>/dev/null || true
+        echo "127.0.1.1 $TARGET_HOSTNAME" >> /etc/hosts
+    fi
+    if command -v hostnamectl >/dev/null 2>&1; then
+        hostnamectl set-hostname "$TARGET_HOSTNAME" 2>/dev/null || true
+    fi
+fi
+
 # 8. Désinstallation de Calamares et des outils Live, application des réglages finaux
 echo "[8/8] Désinstallation de Calamares et des composants Live..."
 rm -f /home/*/Bureau/install-*.desktop /home/*/Desktop/install-*.desktop 2>/dev/null || true

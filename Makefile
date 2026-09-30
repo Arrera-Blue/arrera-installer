@@ -127,4 +127,7 @@ rpm: dist
 
 clean:
 	@rm -rf $(BUILD_DIR) $(TARBALL) $(OUTPUT_DIR) *.src.rpm *.noarch.rpm
+	@rm -f branding/arrera/generate_mode_images.py
+	@rm -f branding/*/slide1.qml branding/*/slide2.qml branding/*/slide3.qml
+	@rm -rf branding/*/slideshow
 	@echo "Nettoyage terminé."

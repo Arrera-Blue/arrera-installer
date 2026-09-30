@@ -33,34 +33,40 @@ Configuration personnalisée de l'installateur **Calamares** et session **Kiosqu
 ## 📁 Arborescence du projet
 
 ```text
-arrera-installer/
+Arrera-installer/
 ├── README.md                          # Documentation complète
 ├── Makefile                           # Automatisation des tests et builds RPM/SRPM
+├── build.sh                           # Script de build RPM/SRPM
+├── debug.sh                           # Lanceur de test et débogage multi-éditions
 ├── rpm/
 │   └── arrera-installer.spec          # Spécification RPM noarch pour Fedora/COPR
 ├── config/
-│   ├── settings.conf                  # Pipeline global Calamares
+│   ├── settings.conf                  # Pipeline par défaut
+│   ├── settings-home.conf             # Pipeline Édition Home
+│   ├── settings-education.conf        # Pipeline Édition Éducation
+│   ├── settings-server.conf           # Pipeline Édition Serveur
+│   ├── settings-enterprise.conf       # Pipeline Édition Entreprise
 │   └── modules/
-│       ├── welcome.conf               # Contrôle des prérequis système (Internet facultatif)
-│       ├── packagechooser-installmode.conf # Choix d'installation En ligne vs Hors-ligne
+│       ├── users-home.conf            # Utilisateur Home (machine arrera)
+│       ├── users-education.conf       # Compte parents (machine arrera-school)
+│       ├── users-server.conf          # Compte serveur avec mot de passe root
+│       ├── users-enterprise.conf      # Compte entreprise avec mot de passe root
+│       ├── welcome.conf               # Contrôle des prérequis système
+│       ├── packagechooser-installmode.conf # Choix d'installation
 │       ├── unpackfs.conf              # Décompression de la racine LiveOS
-│       ├── users.conf                 # Configuration des comptes et groupe wheel
-│       ├── bootloader.conf            # Gestion GRUB2 (UEFI + BIOS)
+│       ├── bootloader.conf            # Gestion GRUB2 & systemd-boot
 │       ├── services-systemd.conf      # Services actifs sur le système cible
-│       └── shellprocess-postinstall.conf # Finalisation post-installation DNF/Arrera
-├── branding/
-│   └── arrera/
-│       ├── branding.desc              # Métadonnées et descripteur de branding
-│       ├── stylesheet.qss             # Feuille de style QSS sombre/bleue
-│       ├── arrera-logo.svg            # Logo vectoriel officiel Arrera
-│       └── slideshow/
-│           ├── slideshow.qml          # Diaporama interactif avec timer
-│           ├── Slide1.qml             # Présentation générale
-│           ├── Slide2.qml             # Écosystème Arrera & COPR
-│           └── Slide3.qml             # Sécurité, performances & ARM64
+│       └── shellprocess-postinstall.conf # Finalisation post-installation
+├── branding/                          # Thèmes visuels Libadwaita Light
+│   ├── arrera/                        # Base / Défaut (Bleu)
+│   ├── arrera-home/                   # Édition Home (Bleu GNOME)
+│   ├── arrera-education/              # Édition Éducation (Turquoise GNOME)
+│   ├── arrera-server/                 # Édition Serveur (Noir GNOME)
+│   └── arrera-enterprise/             # Édition Entreprise (Violet GNOME)
 ├── kiosk/
 │   ├── arrera-installer-kiosk.sh      # Lanceur de session kiosque (cage/wayland)
-│   └── arrera-kiosk.service           # Unité systemd TTY1 pour l'ISO Live
+│   ├── arrera-kiosk.service           # Unité systemd TTY1 pour l'ISO Live
+│   └── arrera-postinstall.sh          # Automatisation post-install et hostname
 └── desktop/
     └── calamares-arrera.desktop       # Raccourci d'installation pour bureau
 ```
@@ -69,7 +75,7 @@ arrera-installer/
 
 ## 🔨 Compilation rapide avec `build.sh`
 
-Un script tout-en-un exécutable [build.sh](file:///home/baptistep/Documents/arrera-linux/arrera-installer/build.sh) est disponible à la racine du projet :
+Un script tout-en-un exécutable [build.sh](file:///home/baptistep/arrera-installer/build.sh) est disponible à la racine du projet :
 
 ```bash
 # Compilation complète (tests + RPM binaire + SRPM vers output/) :
@@ -109,16 +115,16 @@ Le [Makefile](file:///home/baptistep/Documents/arrera-linux/arrera-installer/Mak
 Le script [debug.sh](file:///home/baptistep/arrera-installer/debug.sh) installe automatiquement les dépendances requises (Calamares, Cage, polices, thèmes), déploie la configuration et démarre Calamares en mode debug :
 
 ```bash
-# Tester l'édition Home (thème clair blanc, accent GNOME Blue) en mode simulation sécurisé :
+# Tester l'édition Home (compte perso, hostname 'arrera' masqué, accent GNOME Blue) :
 ./debug.sh --edition home --dry-run
 
-# Tester l'édition Éducation (thème clair blanc, accent GNOME Turquoise, diaporama scolaire) :
+# Tester l'édition Éducation (compte 'parents', mdp uniquement, hostname 'arrera-school', accent Turquoise) :
 ./debug.sh --edition education --dry-run
 
-# Tester l'édition Serveur (thème clair blanc, accent GNOME Black, diaporama Cockpit/Podman) :
+# Tester l'édition Serveur (compte utilisateur + mot de passe root, accent GNOME Black) :
 ./debug.sh --edition server --dry-run
 
-# Tester l'édition Entreprise (thème clair blanc, accent GNOME Purple, diaporama pro/Active Directory) :
+# Tester l'édition Entreprise (compte utilisateur + mot de passe root, accent GNOME Purple) :
 ./debug.sh --edition enterprise --dry-run
 
 # Tester la session Kiosque plein écran (Cage / Wayland, identique à l'ISO) :
