@@ -651,8 +651,24 @@ QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
     font-size: 12px;
 }
 
-/* Édition Éducation : Masquage complet des blocs Nom, Identifiant ("parents") et Machine ("arrera-school") */
-#labelWhatIsYourName, #labelFullName, #textBoxFullName, #labelFullNameError,
+/* Titre de section tout en haut de la page : "Configuration du compte parents" */
+QLabel#labelWhatIsYourName {
+    color: transparent;
+    font-size: 0px;
+    background-image: url("/usr/share/calamares/branding/arrera-education/config_compte_parents.png");
+    background-repeat: no-repeat;
+    background-position: left center;
+    min-height: 28px;
+    max-height: 28px;
+    height: 28px;
+    min-width: 450px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+
+/* Édition Éducation : Masquage des champs de saisie et questions superflues */
+#labelFullName, #textBoxFullName, #labelFullNameError,
 #username_label_2, #labelChooseUsername, #labelWhatUsername, #labelUsername, #textBoxLoginName, #labelUsernameError,
 #hostnameLabel, #labelChooseHostname, #labelHostname, #labelPickHostname, #labelWhatHostname,
 #textBoxHostName, #textBoxHostname, #labelHostnameError {
@@ -668,6 +684,17 @@ QLabel#passwordMismatchLabel, QLabel#passwordErrorLabel {
     border: none;
     background: transparent;
     color: transparent;
+}
+
+/* Libellé d'instruction du mot de passe */
+QLabel#password_label_2 {
+    color: #1e1e1e;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 24px;
+    margin-top: 0px;
+    margin-bottom: 6px;
+    padding: 0px;
 }
 
 /* --------------------------------------------------------------------------
