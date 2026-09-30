@@ -704,7 +704,8 @@ QLabel#labelWhatIsYourName {
 #labelFullName, #textBoxFullName, #labelFullNameError,
 #username_label_2, #labelChooseUsername, #labelWhatUsername, #labelUsername, #textBoxLoginName, #labelUsernameError,
 #hostnameLabel, #labelChooseHostname, #labelHostname, #labelPickHostname, #labelWhatHostname,
-#textBoxHostName, #textBoxHostname, #labelHostnameError {
+#textBoxHostName, #textBoxHostname, #labelHostnameError,
+#checkBoxRequireStrongPassword {
     max-height: 0px;
     min-height: 0px;
     height: 0px;
