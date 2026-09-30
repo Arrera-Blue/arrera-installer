@@ -123,9 +123,7 @@ if [ -n "$SRPM_FILE" ]; then
     echo -e "  ${BOLD}copr-cli build copr-arrera-blue $SRPM_FILE${NC}"
 fi
 
-echo -e "${YELLOW}Pour installer localement le RPM binaire :${NC}"
-RPM_FILE=$(ls -1 "$OUTPUT_DIR"/*.noarch.rpm 2>/dev/null | head -n 1 || true)
-if [ -n "$RPM_FILE" ]; then
-    echo -e "  ${BOLD}sudo dnf install -y $RPM_FILE${NC}"
-fi
+echo -e "${YELLOW}Pour installer une édition localement (exemple Home ou Éducation) :${NC}"
+echo -e "  ${BOLD}sudo dnf install -y ${OUTPUT_DIR}/arrera-installer-*.noarch.rpm ${OUTPUT_DIR}/arrera-installer-home-*.noarch.rpm${NC}"
+echo -e "  ${CYAN}(ou remplacez 'home' par education, server ou enterprise selon l'édition voulue)${NC}"
 echo ""

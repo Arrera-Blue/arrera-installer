@@ -99,7 +99,7 @@ install:
 dist: clean
 	@echo "Création de l'archive $(TARBALL)..."
 	@mkdir -p $(BUILD_DIR)/$(NAME)-$(VERSION)
-	@cp -a Makefile README.md config branding kiosk desktop rpm $(BUILD_DIR)/$(NAME)-$(VERSION)/
+	@cp -a Makefile README.md LICENSE config branding kiosk desktop rpm $(BUILD_DIR)/$(NAME)-$(VERSION)/
 	@tar -czf $(TARBALL) -C $(BUILD_DIR) $(NAME)-$(VERSION)
 	@rm -rf $(BUILD_DIR)/$(NAME)-$(VERSION)
 	@echo "Archive créée : $(TARBALL)"
