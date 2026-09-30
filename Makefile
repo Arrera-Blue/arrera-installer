@@ -68,7 +68,6 @@ install:
 	@echo "Installation vers $(DESTDIR)..."
 	# Répertoires cibles
 	install -d -m 0755 $(DESTDIR)$(CALAMARES_DIR)/modules
-	install -d -m 0755 $(DESTDIR)$(CALAMARES_DIR)/qml
 	install -d -m 0755 $(DESTDIR)$(DATADIR)/calamares/branding
 	install -d -m 0755 $(DESTDIR)$(DATADIR)/calamares/qml
 	install -d -m 0755 $(DESTDIR)$(BINDIR)
@@ -81,6 +80,7 @@ install:
 
 	# Installation de tous les brandings (arrera, arrera-home, arrera-education, arrera-server, arrera-enterprise)
 	cp -a branding/* $(DESTDIR)$(DATADIR)/calamares/branding/
+	rm -rf $(DESTDIR)$(CALAMARES_DIR)/branding $(DESTDIR)$(CALAMARES_DIR)/qml
 	ln -sfn $(DATADIR)/calamares/branding $(DESTDIR)$(CALAMARES_DIR)/branding
 	ln -sfn $(DATADIR)/calamares/qml $(DESTDIR)$(CALAMARES_DIR)/qml
 

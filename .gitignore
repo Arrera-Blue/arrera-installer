@@ -5,7 +5,8 @@ output/
 *.src.rpm
 *.noarch.rpm
 *.rpm
-
+*.pyc
+__pycache__/
 # Fichiers temporaires éditeurs et OS
 *~
 *.swp

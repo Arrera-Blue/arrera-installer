@@ -133,11 +133,12 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 # ==============================================================================
 
 %files
-%license
+%license LICENSE
 %doc README.md
 %dir %{_sysconfdir}/calamares
 %dir %{_sysconfdir}/calamares/modules
-%dir %{_sysconfdir}/calamares/qml
+%{_sysconfdir}/calamares/branding
+%{_sysconfdir}/calamares/qml
 %config(noreplace) %{_sysconfdir}/calamares/settings.conf
 %config(noreplace) %{_sysconfdir}/calamares/settings-*.conf
 %config(noreplace) %{_sysconfdir}/calamares/modules/*.conf
