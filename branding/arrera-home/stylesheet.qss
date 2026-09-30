@@ -597,49 +597,82 @@ QMenu::item:selected {
 /* --------------------------------------------------------------------------
    16. Page de sélection du mode d'installation (PackageChooser)
    -------------------------------------------------------------------------- */
-#packageChooserPage, QWidget#PackageChooserPage {
+QWidget#PackageChooserPage, #packageChooserPage {
     background-color: #fafafa;
 }
 
+/* Volet de gauche : Liste de sélection élargie et aérée (zéro scrollbar) */
+QWidget#PackageChooserPage QListView,
 #packageChooserPage QListView {
     background-color: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-    padding: 8px;
-    min-width: 270px;
+    border-radius: 14px;
+    padding: 10px;
+    min-width: 320px;
+    max-width: 340px;
     font-size: 13px;
+    outline: none;
 }
 
+QWidget#PackageChooserPage QListView::item,
 #packageChooserPage QListView::item {
-    padding: 12px 16px;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border-radius: 10px;
     margin: 4px 0px;
     color: #1e1e1e;
-    font-weight: 500;
+    font-weight: 600;
+    min-height: 28px;
 }
 
+QWidget#PackageChooserPage QListView::item:hover,
 #packageChooserPage QListView::item:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.05);
     color: #1e1e1e;
 }
 
+QWidget#PackageChooserPage QListView::item:selected,
 #packageChooserPage QListView::item:selected {
     background-color: #3584e4;
     color: #ffffff;
     font-weight: 700;
 }
 
-#packageChooserPage QLabel#previewLabel,
-#packageChooserPage QLabel#screenshotLabel,
-#packageChooserPage QScrollArea {
-    background-color: transparent;
+/* Masquage complet du pavé d'illustration sombre */
+QWidget#PackageChooserPage #productScreenshot,
+#packageChooserPage #productScreenshot,
+#productScreenshot {
+    max-height: 0px;
+    min-height: 0px;
+    height: 0px;
+    max-width: 0px;
+    min-width: 0px;
+    width: 0px;
+    margin: 0px;
+    padding: 0px;
     border: none;
+    background: transparent;
+    color: transparent;
 }
 
-#packageChooserPage QLabel#descriptionLabel {
-    color: #5e5c64;
+/* Titre du mode sélectionné */
+QWidget#PackageChooserPage QLabel#productName,
+#packageChooserPage QLabel#productName {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e1e1e;
+    margin-bottom: 8px;
+}
+
+/* Carte descriptive à droite (Libadwaita Light Card épurée) */
+QWidget#PackageChooserPage QLabel#productDescription,
+#packageChooserPage QLabel#productDescription {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 24px;
+    color: #2e3436;
     font-size: 13px;
-    padding: 10px;
+    line-height: 1.6;
 }
 
 /* --------------------------------------------------------------------------
