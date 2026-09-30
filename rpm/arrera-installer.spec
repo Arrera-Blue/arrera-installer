@@ -146,6 +146,9 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera/
 %{_bindir}/arrera-installer-kiosk.sh
 %{_bindir}/arrera-postinstall.sh
+%{_bindir}/arrera-wifi-setup.sh
+%{_bindir}/arrera-wifi-setup.py
+%{_bindir}/arrera-session-runner.sh
 %{_unitdir}/arrera-kiosk.service
 %{_datadir}/applications/calamares-arrera.desktop
 

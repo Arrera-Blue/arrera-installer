@@ -106,16 +106,23 @@ on_exit_prompt() {
 # Quitter Plymouth juste avant de démarrer le compositeur graphique
 plymouth quit 2>/dev/null || true
 
+# Définition du lanceur de session (Wi-Fi + Calamares)
+SESSION_RUNNER="/usr/bin/arrera-session-runner.sh"
+if [ ! -x "$SESSION_RUNNER" ]; then
+    SESSION_RUNNER="$SCRIPT_DIR/arrera-session-runner.sh"
+    chmod +x "$SESSION_RUNNER" 2>/dev/null || true
+fi
+
 # 1. Exécution avec Cage (Compositeur Wayland Kiosque plein écran)
 if command -v cage >/dev/null 2>&1; then
-    cage -s -- "$CALAMARES_BIN" -d -c /etc/calamares || true
+    cage -s -- "$SESSION_RUNNER" || true
     on_exit_prompt
     exit 0
 fi
 
 # 2. Fallback avec Sway si présent
 if command -v sway >/dev/null 2>&1; then
-    sway --config /dev/null -c "$CALAMARES_BIN -d -c /etc/calamares" || true
+    sway --config /dev/null -c "$SESSION_RUNNER" || true
     on_exit_prompt
     exit 0
 fi
@@ -123,12 +130,12 @@ fi
 # 3. Fallback X11 (Openbox / xinit)
 if command -v xinit >/dev/null 2>&1; then
     export DISPLAY="${DISPLAY:-:0}"
-    xinit "$CALAMARES_BIN" -d -c /etc/calamares -- :0 vt1 || true
+    xinit "$SESSION_RUNNER" -- :0 vt1 || true
     on_exit_prompt
     exit 0
 fi
 
 # 4. Lancement direct (si un serveur graphique tourne déjà)
-"$CALAMARES_BIN" -d -c /etc/calamares || true
+"$SESSION_RUNNER" || true
 on_exit_prompt
 exit 0

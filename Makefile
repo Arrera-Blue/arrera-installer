@@ -39,9 +39,12 @@ validate:
 	@echo "=== [1/4] Validation syntaxique des scripts Bash ==="
 	@bash -n kiosk/arrera-installer-kiosk.sh
 	@bash -n kiosk/arrera-postinstall.sh
+	@bash -n kiosk/arrera-wifi-setup.sh
+	@bash -n kiosk/arrera-session-runner.sh
 	@bash -n build.sh
 	@bash -n debug.sh
-	@echo "-> Scripts Bash valides."
+	@python3 -m py_compile kiosk/arrera-wifi-setup.py
+	@echo "-> Scripts Bash et Python valides."
 	@echo "=== [2/4] Validation des fichiers de configuration Calamares (YAML) ==="
 	@python3 -c "import yaml, glob; \
 		files = glob.glob('config/*.conf') + glob.glob('config/modules/*.conf') + glob.glob('branding/*/*.desc'); \
@@ -84,6 +87,9 @@ install:
 	# Mode Kiosque et post-installation
 	install -m 0755 kiosk/arrera-installer-kiosk.sh $(DESTDIR)$(BINDIR)/arrera-installer-kiosk.sh
 	install -m 0755 kiosk/arrera-postinstall.sh $(DESTDIR)$(BINDIR)/arrera-postinstall.sh
+	install -m 0755 kiosk/arrera-wifi-setup.sh $(DESTDIR)$(BINDIR)/arrera-wifi-setup.sh
+	install -m 0755 kiosk/arrera-wifi-setup.py $(DESTDIR)$(BINDIR)/arrera-wifi-setup.py
+	install -m 0755 kiosk/arrera-session-runner.sh $(DESTDIR)$(BINDIR)/arrera-session-runner.sh
 	install -m 0644 kiosk/arrera-kiosk.service $(DESTDIR)$(UNITDIR)/arrera-kiosk.service
 
 	# Raccourci Desktop

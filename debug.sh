@@ -45,6 +45,7 @@ usage() {
     echo -e "  ${GREEN}--kiosk, -k${NC}          Force le lancement en session kiosque plein écran (Cage / Wayland)"
     echo -e "  ${GREEN}--setup-only, -s${NC}     Installe les dépendances et déploie les fichiers sans lancer"
     echo -e "  ${GREEN}--no-deps${NC}            Saute la vérification/installation des paquets DNF"
+    echo -e "  ${GREEN}--wifi, -w${NC}            Teste l'assistant graphique de connexion Wi-Fi"
     echo -e "  ${GREEN}--help, -h${NC}           Affiche cette aide"
     echo ""
 }
@@ -93,6 +94,33 @@ while [ $# -gt 0 ]; do
         --no-deps)
             SKIP_DEPS=1
             shift
+            ;;
+        --wifi|-w)
+            echo -e "${CYAN}--> Test direct de l'assistant Wi-Fi Arrera...${NC}"
+            if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
+                if command -v cage >/dev/null 2>&1; then
+                    echo -e "${GREEN}Démarrage de Cage (Wayland) pour afficher l'interface graphique Wi-Fi...${NC}"
+                    export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/0}"
+                    $SUDO mkdir -p "$XDG_RUNTIME_DIR" && $SUDO chmod 0700 "$XDG_RUNTIME_DIR"
+                    export XDG_SESSION_TYPE="wayland"
+                    export QT_QPA_PLATFORM="wayland"
+                    export GDK_BACKEND="wayland"
+                    export LIBGL_ALWAYS_SOFTWARE=1
+                    export WLR_LIBINPUT_NO_DEVICES=1
+                    export WLR_RENDERER=pixman
+                    $SUDO env \
+                        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+                        XDG_SESSION_TYPE="wayland" \
+                        GDK_BACKEND="wayland" \
+                        LIBGL_ALWAYS_SOFTWARE=1 \
+                        WLR_LIBINPUT_NO_DEVICES=1 \
+                        WLR_RENDERER=pixman \
+                        cage -s -- python3 "$SCRIPT_DIR/kiosk/arrera-wifi-setup.py" --force
+                    exit 0
+                fi
+            fi
+            python3 "$SCRIPT_DIR/kiosk/arrera-wifi-setup.py" --force
+            exit 0
             ;;
         --help|-h)
             usage
