@@ -262,6 +262,23 @@ GRUB_DEFAULT_EOF
         echo "-> Génération du grub.cfg (/boot/grub2/grub.cfg)..."
         grub2-mkconfig -o /boot/grub2/grub.cfg 2>/dev/null || true
 
+        # Configuration BIOS si le système est en mode BIOS / Legacy
+        if [ ! -d /sys/firmware/efi ]; then
+            echo "-> Système BIOS / Legacy détecté sur x86_64 : finalisation du MBR / BIOS boot..."
+            TARGET_ROOT_DEV_DISK=""
+            if command -v lsblk >/dev/null 2>&1 && [ -n "$TARGET_ROOT_DEV" ]; then
+                PK=$(lsblk -no PKNAME "$TARGET_ROOT_DEV" 2>/dev/null | head -n 1 || true)
+                [ -n "$PK" ] && TARGET_ROOT_DEV_DISK="/dev/$PK"
+            fi
+            if [ -z "$TARGET_ROOT_DEV_DISK" ] && [ -n "$TARGET_ROOT_DEV" ]; then
+                TARGET_ROOT_DEV_DISK=$(echo "$TARGET_ROOT_DEV" | sed -E 's/p?[0-9]+$//')
+            fi
+            if [ -n "$TARGET_ROOT_DEV_DISK" ] && [ -b "$TARGET_ROOT_DEV_DISK" ]; then
+                echo "-> Installation / vérification de GRUB BIOS sur $TARGET_ROOT_DEV_DISK..."
+                grub2-install --target=i386-pc --recheck --force "$TARGET_ROOT_DEV_DISK" 2>/dev/null || true
+            fi
+        fi
+
         # 3. Finalisation UEFI et ESP (/boot/efi)
         if [ -d /sys/firmware/efi ] || [ -d /boot/efi ] || grep -q '/boot/efi' /etc/fstab 2>/dev/null; then
             echo "-> Système UEFI x86_64 détecté : finalisation de la partition ESP..."
@@ -491,7 +508,7 @@ rm -f /usr/share/applications/calamares*.desktop 2>/dev/null || true
 
 # Désinstaller proprement les paquets de l'installateur du système cible
 echo "-> Désinstallation des paquets calamares, arrera-installer et cage..."
-rpm -e --nodeps calamares arrera-installer cage 2>/dev/null || true
+rpm -e --nodeps calamares arrera-installer arrera-installer-home arrera-installer-education arrera-installer-enterprise arrera-installer-server cage 2>/dev/null || true
 
 # Suppression des résidus et caches Calamares
 rm -rf /etc/calamares /usr/share/calamares /usr/lib64/calamares /usr/lib/calamares 2>/dev/null || true

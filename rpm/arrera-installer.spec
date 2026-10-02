@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -20,14 +20,14 @@ Requires:       rsync
 Requires:       dosfstools
 Requires:       e2fsprogs
 Requires:       efibootmgr
-Requires:       grub2-tools
-Requires:       grub2-tools-extra
-Requires:       systemd-boot-unsigned
 Requires:       systemd-udev
 Requires:       polkit
 Requires:       systemd
 Requires:       dnf
 
+Recommends:     (grub2-tools if grub2-common)
+Recommends:     (grub2-tools-extra if grub2-common)
+Recommends:     (systemd-boot-unsigned if systemd-boot)
 Recommends:     abattis-cantarell-fonts
 Recommends:     adwaita-cursor-theme
 Recommends:     qt6-qtwayland-adwaita-decoration
@@ -174,7 +174,14 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
-* Thu Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
+* Fri Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
+- Delegate bootloader installation entirely to arrera-postinstall.sh
+- Enable createHybridBootloaderLayout in partition.conf for BIOS Legacy on GPT
+- Add BIOS Legacy GRUB installation support in arrera-postinstall.sh
+- Make bootloader packages (grub2-tools, systemd-boot-unsigned) conditional to avoid cross-arch conflicts
+- Update uninstallation in postinstall to remove all edition subpackages
+
+* Fri Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
 - Fix file conflict with calamares package on /etc/calamares/branding:
   * Remove symlinks from %files (were conflicting with calamares directory)
   * Create symlinks in %post scriptlet instead
