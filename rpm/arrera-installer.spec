@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -109,6 +109,16 @@ cp %{buildroot}%{_sysconfdir}/calamares/settings-home.conf %{buildroot}%{_syscon
 
 %post
 %systemd_post arrera-kiosk.service
+# Créer les symlinks après installation de calamares pour éviter les conflits
+# de fichiers RPM (calamares possède /etc/calamares/branding en tant que répertoire)
+if [ -d %{_sysconfdir}/calamares/branding ] && [ ! -L %{_sysconfdir}/calamares/branding ]; then
+    rm -rf %{_sysconfdir}/calamares/branding
+fi
+ln -sfn %{_datadir}/calamares/branding %{_sysconfdir}/calamares/branding 2>/dev/null || true
+if [ -d %{_sysconfdir}/calamares/qml ] && [ ! -L %{_sysconfdir}/calamares/qml ]; then
+    rm -rf %{_sysconfdir}/calamares/qml
+fi
+ln -sfn %{_datadir}/calamares/qml %{_sysconfdir}/calamares/qml 2>/dev/null || true
 
 %preun
 %systemd_preun arrera-kiosk.service
@@ -137,8 +147,6 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %doc README.md
 %dir %{_sysconfdir}/calamares
 %dir %{_sysconfdir}/calamares/modules
-%{_sysconfdir}/calamares/branding
-%{_sysconfdir}/calamares/qml
 %config(noreplace) %{_sysconfdir}/calamares/settings.conf
 %config(noreplace) %{_sysconfdir}/calamares/settings-*.conf
 %config(noreplace) %{_sysconfdir}/calamares/modules/*.conf
@@ -166,6 +174,12 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Thu Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
+- Fix file conflict with calamares package on /etc/calamares/branding:
+  * Remove symlinks from %files (were conflicting with calamares directory)
+  * Create symlinks in %post scriptlet instead
+  * Update Makefile to not create symlinks during install
+
 * Tue Sep 29 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-6
 - Add multi-edition branding and subpackages:
   * arrera-installer-home: Home edition with Libadwaita Blue branding

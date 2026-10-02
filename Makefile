@@ -80,9 +80,9 @@ install:
 
 	# Installation de tous les brandings (arrera, arrera-home, arrera-education, arrera-server, arrera-enterprise)
 	cp -a branding/* $(DESTDIR)$(DATADIR)/calamares/branding/
-	rm -rf $(DESTDIR)$(CALAMARES_DIR)/branding $(DESTDIR)$(CALAMARES_DIR)/qml
-	ln -sfn $(DATADIR)/calamares/branding $(DESTDIR)$(CALAMARES_DIR)/branding
-	ln -sfn $(DATADIR)/calamares/qml $(DESTDIR)$(CALAMARES_DIR)/qml
+	# Note : les symlinks /etc/calamares/branding et /etc/calamares/qml
+	# sont créés par le scriptlet %post du RPM pour éviter les conflits
+	# avec le paquet calamares Fedora qui possède déjà ces répertoires.
 
 	# Mode Kiosque et post-installation
 	install -m 0755 kiosk/arrera-installer-kiosk.sh $(DESTDIR)$(BINDIR)/arrera-installer-kiosk.sh
