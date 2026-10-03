@@ -41,6 +41,12 @@ fi
 # S'assurer que le répertoire QML existe (Calamares l'exige au démarrage)
 mkdir -p /usr/share/calamares/qml
 
+# Neutralisation préventive du module 'bootloader' dans les settings Calamares
+for conf in /etc/calamares/settings.conf /etc/calamares/settings-*.conf /usr/share/calamares/settings.conf; do
+    [ -f "$conf" ] || continue
+    sed -i -E '/^[[:space:]]*-[[:space:]]*bootloader[[:space:]]*$/d' "$conf" 2>/dev/null || true
+done
+
 # ==============================================================================
 # Préparation de la racine LiveOS pour Calamares unpackfs (/run/rootfsbase)
 # Fedora LiveOS fournit l'image racine ext4 via dracut ou device-mapper.

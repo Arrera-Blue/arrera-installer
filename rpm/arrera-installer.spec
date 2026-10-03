@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -174,6 +174,10 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Sat Oct 03 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-9
+- Add preventive bootloader sanitization in arrera-installer-kiosk.sh
+- Add binary restoration and cleanup in arrera-postinstall.sh
+
 * Fri Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
 - Delegate bootloader installation entirely to arrera-postinstall.sh
 - Enable createHybridBootloaderLayout in partition.conf for BIOS Legacy on GPT
