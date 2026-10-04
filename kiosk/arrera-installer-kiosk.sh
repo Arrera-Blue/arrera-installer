@@ -41,6 +41,17 @@ fi
 # S'assurer que le répertoire QML existe (Calamares l'exige au démarrage)
 mkdir -p /usr/share/calamares/qml
 
+# Détection et application dynamique de la configuration et du branding selon l'édition installée
+if [ -d /usr/share/calamares/branding/arrera-education ] && [ -f /etc/calamares/settings-education.conf ]; then
+    cp -f /etc/calamares/settings-education.conf /etc/calamares/settings.conf 2>/dev/null || true
+elif [ -d /usr/share/calamares/branding/arrera-enterprise ] && [ -f /etc/calamares/settings-enterprise.conf ]; then
+    cp -f /etc/calamares/settings-enterprise.conf /etc/calamares/settings.conf 2>/dev/null || true
+elif [ -d /usr/share/calamares/branding/arrera-server ] && [ -f /etc/calamares/settings-server.conf ]; then
+    cp -f /etc/calamares/settings-server.conf /etc/calamares/settings.conf 2>/dev/null || true
+elif [ -d /usr/share/calamares/branding/arrera-home ] && [ -f /etc/calamares/settings-home.conf ]; then
+    cp -f /etc/calamares/settings-home.conf /etc/calamares/settings.conf 2>/dev/null || true
+fi
+
 # Neutralisation préventive du module 'bootloader' dans les settings Calamares
 for conf in /etc/calamares/settings.conf /etc/calamares/settings-*.conf /usr/share/calamares/settings.conf; do
     [ -f "$conf" ] || continue
