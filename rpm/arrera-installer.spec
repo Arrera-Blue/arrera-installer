@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        15%{?dist}
+Release:        18%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
