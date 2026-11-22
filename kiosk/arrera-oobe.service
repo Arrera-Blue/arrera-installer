@@ -1,0 +1,30 @@
+[Unit]
+Description=Arrera Blue Lynx First-Boot OOBE Session
+Documentation=https://github.com/Arrera-Blue/arrera-blue-lynx
+After=systemd-user-sessions.service systemd-udev-settle.service NetworkManager.service
+Conflicts=getty@tty1.service gdm.service lightdm.service sddm.service
+Before=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/arrera-oobe.sh
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+TTYPath=/dev/tty1
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+PAMName=login
+User=root
+WorkingDirectory=/root
+Environment=XDG_RUNTIME_DIR=/run/user/0
+Environment=XDG_SESSION_TYPE=wayland
+Environment=GDK_BACKEND=wayland,x11
+Environment=XKB_DEFAULT_LAYOUT=fr
+Environment=XKB_DEFAULT_MODEL=pc105
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target

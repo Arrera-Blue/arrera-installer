@@ -41,6 +41,7 @@ validate:
 	@bash -n kiosk/arrera-postinstall.sh
 	@bash -n kiosk/arrera-wifi-setup.sh
 	@bash -n kiosk/arrera-session-runner.sh
+	@bash -n kiosk/arrera-oobe.sh
 	@bash -n build.sh
 	@bash -n debug.sh
 	@python3 -m py_compile kiosk/arrera-wifi-setup.py
@@ -90,7 +91,9 @@ install:
 	install -m 0755 kiosk/arrera-wifi-setup.sh $(DESTDIR)$(BINDIR)/arrera-wifi-setup.sh
 	install -m 0755 kiosk/arrera-wifi-setup.py $(DESTDIR)$(BINDIR)/arrera-wifi-setup.py
 	install -m 0755 kiosk/arrera-session-runner.sh $(DESTDIR)$(BINDIR)/arrera-session-runner.sh
+	install -m 0755 kiosk/arrera-oobe.sh $(DESTDIR)$(BINDIR)/arrera-oobe.sh
 	install -m 0644 kiosk/arrera-kiosk.service $(DESTDIR)$(UNITDIR)/arrera-kiosk.service
+	install -m 0644 kiosk/arrera-oobe.service $(DESTDIR)$(UNITDIR)/arrera-oobe.service
 
 	# Raccourci Desktop
 	install -m 0644 desktop/calamares-arrera.desktop $(DESTDIR)$(APPDIR)/calamares-arrera.desktop

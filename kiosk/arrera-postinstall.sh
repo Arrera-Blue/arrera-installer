@@ -429,10 +429,48 @@ if command -v dracut >/dev/null 2>&1; then
     }
 fi
 
-# 4. Forcer la cible graphique (GDM / GNOME)
-echo "[4/8] Configuration du démarrage graphique (GDM)..."
-systemctl set-default graphical.target 2>/dev/null || ln -sf /usr/lib/systemd/system/graphical.target /etc/systemd/system/default.target
-systemctl enable gdm 2>/dev/null || ln -sf /usr/lib/systemd/system/gdm.service /etc/systemd/system/display-manager.service
+# Détection de l'édition depuis la configuration Calamares avant nettoyage
+ED_BRANDING=""
+if [ -f /etc/calamares/settings.conf ]; then
+    ED_BRANDING=$(grep '^branding:' /etc/calamares/settings.conf 2>/dev/null | awk '{print $2}')
+fi
+
+IS_OOBE_EDITION=0
+OOBE_EDITION=""
+case "$ED_BRANDING" in
+    arrera-education)
+        IS_OOBE_EDITION=1
+        OOBE_EDITION="education"
+        ;;
+    arrera-home|arrera)
+        IS_OOBE_EDITION=1
+        OOBE_EDITION="home"
+        ;;
+esac
+
+# 4. Configuration du premier démarrage (OOBE Arrera Blue Lynx pour Home/Education, GDM sinon)
+if [ "$IS_OOBE_EDITION" -eq 1 ]; then
+    echo "[4/8] Configuration de la session OOBE de premier démarrage ($OOBE_EDITION)..."
+    mkdir -p /usr/local/bin /etc/systemd/system/multi-user.target.wants
+    if [ -f /usr/bin/arrera-oobe.sh ]; then
+        cp -f /usr/bin/arrera-oobe.sh /usr/local/bin/arrera-oobe.sh
+        chmod 0755 /usr/local/bin/arrera-oobe.sh
+    fi
+    if [ -f /usr/lib/systemd/system/arrera-oobe.service ]; then
+        cp -f /usr/lib/systemd/system/arrera-oobe.service /etc/systemd/system/arrera-oobe.service
+        chmod 0644 /etc/systemd/system/arrera-oobe.service
+    fi
+    echo "$OOBE_EDITION" > /etc/arrera-oobe-edition
+
+    systemctl disable gdm 2>/dev/null || true
+    rm -f /etc/systemd/system/display-manager.service
+    systemctl set-default multi-user.target 2>/dev/null || ln -sf /usr/lib/systemd/system/multi-user.target /etc/systemd/system/default.target
+    systemctl enable arrera-oobe.service 2>/dev/null || ln -sf /etc/systemd/system/arrera-oobe.service /etc/systemd/system/multi-user.target.wants/arrera-oobe.service
+else
+    echo "[4/8] Configuration du démarrage graphique (GDM)..."
+    systemctl set-default graphical.target 2>/dev/null || ln -sf /usr/lib/systemd/system/graphical.target /etc/systemd/system/default.target
+    systemctl enable gdm 2>/dev/null || ln -sf /usr/lib/systemd/system/gdm.service /etc/systemd/system/display-manager.service
+fi
 
 # 5. Désactiver et supprimer définitivement le mode kiosque
 echo "[5/8] Nettoyage des composants Kiosque Live..."
@@ -445,24 +483,29 @@ rm -f /usr/bin/arrera-installer-kiosk.sh
 echo "[6/8] Réinitialisation de la configuration de connexion GDM..."
 rm -f /etc/gdm/custom.conf
 
-# 7. Nettoyer le compte Live temporaire 'arrera' si un utilisateur a été créé
+# 7. Nettoyer le compte Live temporaire 'arrera'
 echo "[7/8] Vérification des comptes utilisateurs..."
-OTHER_USER=$(awk -F: '$3 >= 1000 && $1 != "arrera" && $1 != "nobody" {print $1}' /etc/passwd | head -n 1)
-if [ -n "$OTHER_USER" ]; then
-    echo "-> Utilisateur principal installé détecté : $OTHER_USER"
-    echo "-> Suppression du compte temporaire live 'arrera'..."
-    pkill -9 -u arrera 2>/dev/null || true
-    userdel -r -f arrera 2>/dev/null || true
-    rm -rf /home/arrera
-    rm -f /etc/sudoers.d/arrera
+if [ "$IS_OOBE_EDITION" -eq 1 ]; then
+    if id arrera >/dev/null 2>&1 || [ -d /home/arrera ] || [ -f /etc/sudoers.d/arrera ]; then
+        echo "-> Suppression du compte temporaire live 'arrera' (création différée vers Arrera Blue Lynx)..."
+        pkill -9 -u arrera 2>/dev/null || true
+        userdel -r -f arrera 2>/dev/null || true
+        rm -rf /home/arrera
+        rm -f /etc/sudoers.d/arrera
+    fi
+else
+    OTHER_USER=$(awk -F: '$3 >= 1000 && $1 != "arrera" && $1 != "nobody" {print $1}' /etc/passwd | head -n 1)
+    if [ -n "$OTHER_USER" ]; then
+        echo "-> Utilisateur principal installé détecté : $OTHER_USER"
+        echo "-> Suppression du compte temporaire live 'arrera'..."
+        pkill -9 -u arrera 2>/dev/null || true
+        userdel -r -f arrera 2>/dev/null || true
+        rm -rf /home/arrera
+        rm -f /etc/sudoers.d/arrera
+    fi
 fi
 
 # 7b. Configuration garantie du nom d'hôte (hostname) selon l'édition
-ED_BRANDING=""
-if [ -f /etc/calamares/settings.conf ]; then
-    ED_BRANDING=$(grep '^branding:' /etc/calamares/settings.conf 2>/dev/null | awk '{print $2}')
-fi
-
 TARGET_HOSTNAME=""
 if [ "$ED_BRANDING" = "arrera-education" ] || grep -q "^parents:" /etc/passwd 2>/dev/null; then
     TARGET_HOSTNAME="arrera-school"
@@ -490,12 +533,21 @@ rm -f /etc/xdg/autostart/install-*.desktop 2>/dev/null || true
 rm -f /usr/share/applications/calamares*.desktop 2>/dev/null || true
 
 # Désinstaller proprement les paquets de l'installateur du système cible
-echo "-> Désinstallation des paquets calamares, arrera-installer et cage..."
-rpm -e --nodeps calamares arrera-installer cage 2>/dev/null || true
-
-# Suppression des résidus et caches Calamares
-rm -rf /etc/calamares /usr/share/calamares /usr/lib64/calamares /usr/lib/calamares 2>/dev/null || true
-rm -f /usr/bin/calamares /usr/bin/cage /usr/bin/arrera-installer-kiosk.sh /etc/systemd/system/arrera-kiosk.service 2>/dev/null || true
+if [ "$IS_OOBE_EDITION" -eq 1 ]; then
+    echo "-> Désinstallation de calamares et arrera-installer (conservation de cage pour OOBE)..."
+    for pkg in calamares arrera-installer-home arrera-installer-education arrera-installer; do
+        if rpm -q "$pkg" >/dev/null 2>&1; then
+            rpm -e --nodeps "$pkg" 2>/dev/null || true
+        fi
+    done
+    rm -rf /etc/calamares /usr/share/calamares /usr/lib64/calamares /usr/lib/calamares 2>/dev/null || true
+    rm -f /usr/bin/calamares /usr/bin/arrera-installer-kiosk.sh /etc/systemd/system/arrera-kiosk.service 2>/dev/null || true
+else
+    echo "-> Désinstallation des paquets calamares, arrera-installer et cage..."
+    rpm -e --nodeps calamares arrera-installer cage 2>/dev/null || true
+    rm -rf /etc/calamares /usr/share/calamares /usr/lib64/calamares /usr/lib/calamares 2>/dev/null || true
+    rm -f /usr/bin/calamares /usr/bin/cage /usr/bin/arrera-installer-kiosk.sh /etc/systemd/system/arrera-kiosk.service 2>/dev/null || true
+fi
 
 if command -v dconf >/dev/null 2>&1; then
     dconf update 2>/dev/null || true

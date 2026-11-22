@@ -116,7 +116,7 @@ Le script [debug.sh](file:///home/baptistep/arrera-installer/debug.sh) installe 
 
 ```bash
 # Tester l'édition Home (compte perso, hostname 'arrera' masqué, accent GNOME Blue) :
-./debug.sh --edition home --dry-run
+=====================
 
 # Tester l'édition Éducation (compte 'parents', mdp uniquement, hostname 'arrera-school', accent Turquoise) :
 ./debug.sh --edition education --dry-run

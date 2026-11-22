@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -58,6 +58,7 @@ including:
 %package home
 Summary:        Installateur Calamares pour Arrera Blue Édition Home
 Requires:       %{name} = %{version}-%{release}
+Requires:       arrera-blue-lynx
 Provides:       %{name}-branding = %{version}-%{release}
 Conflicts:      %{name}-education %{name}-server %{name}-enterprise
 
@@ -67,6 +68,7 @@ Configuration visuelle, branding et diaporama Calamares pour Arrera Blue Éditio
 %package education
 Summary:        Installateur Calamares pour Arrera Blue Édition Éducation
 Requires:       %{name} = %{version}-%{release}
+Requires:       arrera-blue-lynx
 Provides:       %{name}-branding = %{version}-%{release}
 Conflicts:      %{name}-home %{name}-server %{name}-enterprise
 
@@ -150,7 +152,9 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_bindir}/arrera-wifi-setup.sh
 %{_bindir}/arrera-wifi-setup.py
 %{_bindir}/arrera-session-runner.sh
+%{_bindir}/arrera-oobe.sh
 %{_unitdir}/arrera-kiosk.service
+%{_unitdir}/arrera-oobe.service
 %{_datadir}/applications/calamares-arrera.desktop
 
 %files home
