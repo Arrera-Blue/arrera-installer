@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        7%{?dist}
+Release:        19%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -20,14 +20,14 @@ Requires:       rsync
 Requires:       dosfstools
 Requires:       e2fsprogs
 Requires:       efibootmgr
-Requires:       grub2-tools
-Requires:       grub2-tools-extra
-Requires:       systemd-boot-unsigned
 Requires:       systemd-udev
 Requires:       polkit
 Requires:       systemd
 Requires:       dnf
 
+Recommends:     (grub2-tools if grub2-common)
+Recommends:     (grub2-tools-extra if grub2-common)
+Recommends:     (systemd-boot-unsigned if systemd-boot)
 Recommends:     abattis-cantarell-fonts
 Recommends:     adwaita-cursor-theme
 Recommends:     qt6-qtwayland-adwaita-decoration
@@ -111,6 +111,16 @@ cp %{buildroot}%{_sysconfdir}/calamares/settings-home.conf %{buildroot}%{_syscon
 
 %post
 %systemd_post arrera-kiosk.service
+# Créer les symlinks après installation de calamares pour éviter les conflits
+# de fichiers RPM (calamares possède /etc/calamares/branding en tant que répertoire)
+if [ -d %{_sysconfdir}/calamares/branding ] && [ ! -L %{_sysconfdir}/calamares/branding ]; then
+    rm -rf %{_sysconfdir}/calamares/branding
+fi
+ln -sfn %{_datadir}/calamares/branding %{_sysconfdir}/calamares/branding 2>/dev/null || true
+if [ -d %{_sysconfdir}/calamares/qml ] && [ ! -L %{_sysconfdir}/calamares/qml ]; then
+    rm -rf %{_sysconfdir}/calamares/qml
+fi
+ln -sfn %{_datadir}/calamares/qml %{_sysconfdir}/calamares/qml 2>/dev/null || true
 
 %preun
 %systemd_preun arrera-kiosk.service
@@ -139,8 +149,6 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %doc README.md
 %dir %{_sysconfdir}/calamares
 %dir %{_sysconfdir}/calamares/modules
-%{_sysconfdir}/calamares/branding
-%{_sysconfdir}/calamares/qml
 %config(noreplace) %{_sysconfdir}/calamares/settings.conf
 %config(noreplace) %{_sysconfdir}/calamares/settings-*.conf
 %config(noreplace) %{_sysconfdir}/calamares/modules/*.conf
@@ -170,6 +178,28 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Sun Nov 22 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-19
+- Delegate user creation and first-boot setup to arrera-blue-lynx for Home and Education editions
+- Add arrera-oobe.service and arrera-oobe.sh first-boot launcher
+- Keep cage installed for Home and Education OOBE sessions
+
+* Sat Oct 03 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-9
+- Add preventive bootloader sanitization in arrera-installer-kiosk.sh
+- Add binary restoration and cleanup in arrera-postinstall.sh
+
+* Fri Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-8
+- Delegate bootloader installation entirely to arrera-postinstall.sh
+- Enable createHybridBootloaderLayout in partition.conf for BIOS Legacy on GPT
+- Add BIOS Legacy GRUB installation support in arrera-postinstall.sh
+- Make bootloader packages (grub2-tools, systemd-boot-unsigned) conditional to avoid cross-arch conflicts
+- Update uninstallation in postinstall to remove all edition subpackages
+
+* Fri Oct 02 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-7
+- Fix file conflict with calamares package on /etc/calamares/branding:
+  * Remove symlinks from %files (were conflicting with calamares directory)
+  * Create symlinks in %post scriptlet instead
+  * Update Makefile to not create symlinks during install
+
 * Tue Sep 29 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-6
 - Add multi-edition branding and subpackages:
   * arrera-installer-home: Home edition with Libadwaita Blue branding
