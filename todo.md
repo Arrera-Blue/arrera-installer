@@ -40,7 +40,7 @@ Ce document détaille toutes les modifications à apporter dans le dépôt **`ar
 ## 🛠️ 2. Checklist détaillée des modifications à effectuer
 
 ### Tâche 1 : Mettre à jour `config/modules/partition.conf`
-- [ ] Désactiver `createHybridBootloaderLayout` par défaut (`false`) et conserver `defaultPartitionTableType: "gpt"` comme valeur par défaut (qui sera ajustée dynamiquement en `"msdos"` par le script kiosque si le système est en BIOS Legacy) :
+- [x] Désactiver `createHybridBootloaderLayout` par défaut (`false`) et conserver `defaultPartitionTableType: "gpt"` comme valeur par défaut (qui sera ajustée dynamiquement en `"msdos"` par le script kiosque si le système est en BIOS Legacy) :
 
 ```yaml
 # ==============================================================================
@@ -64,7 +64,7 @@ lvm:
 ---
 
 ### Tâche 2 : Adapter dynamiquement `partition.conf` (BIOS vs UEFI) dans `kiosk/arrera-installer-kiosk.sh`
-- [ ] Dans `kiosk/arrera-installer-kiosk.sh` (juste après la neutralisation de `- bootloader` autour de la ligne 60), ajouter la détection du mode de démarrage (`[ -d /sys/firmware/efi ]`) pour forcer `"gpt"` en UEFI et `"msdos"` en BIOS Legacy :
+- [x] Dans `kiosk/arrera-installer-kiosk.sh` (juste après la neutralisation de `- bootloader` autour de la ligne 60), ajouter la détection du mode de démarrage (`[ -d /sys/firmware/efi ]`) pour forcer `"gpt"` en UEFI et `"msdos"` en BIOS Legacy :
 
 ```bash
 # Configuration dynamique de la table de partition sur x86_64 selon le mode (UEFI -> gpt | BIOS -> msdos)
@@ -93,12 +93,12 @@ fi
 ---
 
 ### Tâche 3 : Optimiser la vitesse (étape 91 % en ~20s) dans `kiosk/arrera-postinstall.sh`
-- [ ] **3.1. Remplacer la redirection `tee` (ligne 11)** :
+- [x] **3.1. Remplacer la redirection `tee` (ligne 11)** :
   ```bash
   mkdir -p /var/log
   exec >> /var/log/arrera-postinstall.log 2>&1
   ```
-- [ ] **3.2. Remplacer le `dnf makecache` + `dnf upgrade -y --refresh` global (lignes 50-56)** :
+- [x] **3.2. Remplacer le `dnf makecache` + `dnf upgrade -y --refresh` global (lignes 50-56)** :
   - Ne mettre à jour en mode `online` **que** les paquets Arrera depuis le dépôt Copr `arrera-blue` (évite de télécharger les métadonnées lentes de `rpmsphere` et les centaines de Mo de Fedora Updates pendant Calamares) :
   ```bash
   if [ "$IS_ONLINE" -eq 1 ]; then
@@ -111,7 +111,7 @@ fi
       echo "-> Composants Arrera à jour."
   fi
   ```
-- [ ] **3.3. Nettoyer l'ancien `rescue` du Live AVANT Dracut et ne régénérer qu'un seul initramfs `--hostonly` (lignes 93-112)** :
+- [x] **3.3. Nettoyer l'ancien `rescue` du Live AVANT Dracut et ne régénérer qu'un seul initramfs `--hostonly` (lignes 93-112)** :
   - Initialiser `/etc/machine-id` et supprimer les anciens `/boot/*rescue*` du Live **avant** d'appeler `dracut`.
   - Remplacer `dracut --regenerate-all --force --add plymouth` par un seul appel ciblé sur `$KVER` :
   ```bash
@@ -121,7 +121,7 @@ fi
           dracut -f --add plymouth --kver "$KVER" "/boot/initramfs-${KVER}.img" 2>&1 || true
   fi
   ```
-- [ ] **3.4. Remplacer la génération lente du `rescue` `--no-hostonly` (~3 min) par une copie directe (~0,1 s) sur `x86_64` (lignes 457-471)** :
+- [x] **3.4. Remplacer la génération lente du `rescue` `--no-hostonly` (~3 min) par une copie directe (~0,1 s) sur `x86_64` (lignes 457-471)** :
   - Supprimer l'appel à `51-dracut-rescue.install` et à `dracut -f --no-hostonly -a "rescue"`.
   - Copier directement l'initramfs principal nouvellement généré :
   ```bash
@@ -136,7 +136,7 @@ fi
 ---
 
 ### Tâche 4 : Fiabiliser l'amorçage BIOS Legacy (`x86_64`) dans `kiosk/arrera-postinstall.sh`
-- [ ] **4.1. Désactiver `GRUB_ENABLE_BLSCFG` en mode BIOS Legacy (`[ ! -d /sys/firmware/efi ]`)** :
+- [x] **4.1. Désactiver `GRUB_ENABLE_BLSCFG` en mode BIOS Legacy (`[ ! -d /sys/firmware/efi ]`)** :
   - Dans `/etc/default/grub` (ligne 417), définir `GRUB_ENABLE_BLSCFG=true` en UEFI, mais **`GRUB_ENABLE_BLSCFG=false` en BIOS Legacy** :
   ```bash
   IS_UEFI_SYSTEM=0
@@ -150,7 +150,7 @@ fi
   fi
   ```
   *(Avec `GRUB_ENABLE_BLSCFG=false` en BIOS, `grub2-mkconfig` génère directement les entrées `menuentry` classiques dans `/boot/grub2/grub.cfg`, ce qui évite tout blocage de `blscfg.mod` sur MBR/BIOS.)*
-- [ ] **4.2. Activer le drapeau bootable MBR (`0x80`) et exécuter `grub2-install --target=i386-pc` AVANT `grub2-mkconfig` (uniquement en BIOS)** :
+- [x] **4.2. Activer le drapeau bootable MBR (`0x80`) et exécuter `grub2-install --target=i386-pc` AVANT `grub2-mkconfig` (uniquement en BIOS)** :
   - Détecter `BOOT_PART_DEV`, `BOOT_PART_NUM` et `TARGET_DISK`.
   - Si `[ "$IS_UEFI_SYSTEM" -eq 0 ]` :
     1. Si la table de partitions (`blkid -s PTTYPE -o value "$TARGET_DISK"`) est `dos` (MBR), activer le drapeau bootable sur la partition :
@@ -164,7 +164,7 @@ fi
        "$GRUB_INSTALL_BIN" --target=i386-pc --boot-directory=/boot --recheck "$TARGET_DISK" 2>&1 || \
            "$GRUB_INSTALL_BIN" --target=i386-pc --boot-directory=/boot --recheck --force "$TARGET_DISK" 2>&1 || true
        ```
-- [ ] **4.3. Supprimer l'ancien `/boot/grub2/grub.cfg` du Live avant d'appeler `grub2-mkconfig.orig` et valider le résultat** :
+- [x] **4.3. Supprimer l'ancien `/boot/grub2/grub.cfg` du Live avant d'appeler `grub2-mkconfig.orig` et valider le résultat** :
   - Faire `rm -f /boot/grub2/grub.cfg /boot/grub2/grub.cfg.new` avant `"$GRUB_MKCONFIG_BIN" -o /boot/grub2/grub.cfg`.
   - Vérifier que `/boot/grub2/grub.cfg` contient bien `$BOOT_UUID` et (en BIOS) au moins un bloc `menuentry`.
   - Si ce n'est pas le cas (ou si `grub2-mkconfig` échoue en chroot), écrire le `/boot/grub2/grub.cfg` autonome avec un bloc `menuentry 'Arrera Blue 2026'` explicite et un `function load_video` compatible BIOS (`insmod vbe; insmod vga` quand `${grub_platform} != efi`).
@@ -172,5 +172,5 @@ fi
 ---
 
 ### Tâche 5 : Builder et publier le RPM `arrera-installer`
-- [ ] Incrémenter le numéro de `Release:` dans `rpm/arrera-installer.spec` (ex: `20%{?dist}`).
+- [x] Incrémenter le numéro de `Release:` dans `rpm/arrera-installer.spec` (ex: `20%{?dist}`).
 - [ ] Compiler et publier la mise à jour sur le dépôt Copr `arrera-software/arrera-blue`.

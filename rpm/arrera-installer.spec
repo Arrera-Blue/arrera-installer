@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        19%{?dist}
+Release:        20%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -178,6 +178,10 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Mon Nov 23 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-20
+- Speed up post-install (91% step): scope online DNF upgrade to Arrera Copr packages, use fast --hostonly dracut and instant rescue initramfs copy
+- Fix x86_64 BIOS Legacy boot: auto-select msdos partition table on BIOS, activate MBR bootable flag (0x80), disable BLSCFG on BIOS for direct menuentry generation, and run grub2-install before grub2-mkconfig
+
 * Sun Nov 22 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-19
 - Delegate user creation and first-boot setup to arrera-blue-lynx for Home and Education editions
 - Add arrera-oobe.service and arrera-oobe.sh first-boot launcher

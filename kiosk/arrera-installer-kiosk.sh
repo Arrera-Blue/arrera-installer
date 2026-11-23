@@ -58,6 +58,28 @@ for conf in /etc/calamares/settings.conf /etc/calamares/settings-*.conf /usr/sha
     sed -i -E '/^[[:space:]]*-[[:space:]]*bootloader[[:space:]]*$/d' "$conf" 2>/dev/null || true
 done
 
+# Configuration dynamique de la table de partition sur x86_64 selon le mode (UEFI -> gpt | BIOS -> msdos)
+if [ "$(uname -m)" = "x86_64" ]; then
+    for pconf in /etc/calamares/modules/partition.conf /etc/calamares/modules/partition-*.conf /usr/share/calamares/modules/partition.conf; do
+        [ -f "$pconf" ] || continue
+        if [ -d /sys/firmware/efi ]; then
+            TARGET_PT="gpt"
+        else
+            TARGET_PT="msdos"
+        fi
+        if grep -qE '^[[:space:]]*defaultPartitionTableType:' "$pconf"; then
+            sed -i -E "s/^[[:space:]]*defaultPartitionTableType:.*/defaultPartitionTableType: \"${TARGET_PT}\"/" "$pconf" 2>/dev/null || true
+        else
+            echo "defaultPartitionTableType: \"${TARGET_PT}\"" >> "$pconf"
+        fi
+        if grep -qE '^[[:space:]]*createHybridBootloaderLayout:' "$pconf"; then
+            sed -i -E 's/^[[:space:]]*createHybridBootloaderLayout:.*/createHybridBootloaderLayout: false/' "$pconf" 2>/dev/null || true
+        else
+            echo "createHybridBootloaderLayout: false" >> "$pconf"
+        fi
+    done
+fi
+
 # ==============================================================================
 # Préparation de la racine LiveOS pour Calamares unpackfs (/run/rootfsbase)
 # Fedora LiveOS fournit l'image racine ext4 via dracut ou device-mapper.
