@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -178,6 +178,11 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Tue Nov 24 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-21
+- Compute target root UUID and write /etc/kernel/cmdline before running dracut --hostonly to prevent build-host LVM root leak
+- Sanitize /boot/loader/entries/*.conf and /boot/grub2/grub.cfg against build-host LVM parameters
+- Keep VBE/GOP graphical framebuffer in GRUB BIOS Legacy (GRUB_GFXPAYLOAD_LINUX="keep") and auto-create bios_grub partition on GPT BIOS disks if missing
+
 * Mon Nov 23 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-20
 - Speed up post-install (91% step): scope online DNF upgrade to Arrera Copr packages, use fast --hostonly dracut and instant rescue initramfs copy
 - Fix x86_64 BIOS Legacy boot: auto-select msdos partition table on BIOS, activate MBR bootable flag (0x80), disable BLSCFG on BIOS for direct menuentry generation, and run grub2-install before grub2-mkconfig
