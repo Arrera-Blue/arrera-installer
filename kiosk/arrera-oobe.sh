@@ -104,7 +104,8 @@ run_oobe_session() {
     fi
 
     if command -v cage >/dev/null 2>&1; then
-        "${runner[@]}" cage -s -- "$OOBE_BIN"
+        # --windowed évite l'appel prématuré xdg_toplevel_set_fullscreen avant surface->initialized dans Cage/wlroots (Cage force déjà le plein écran)
+        "${runner[@]}" cage -s -- "$OOBE_BIN" --windowed
     elif command -v sway >/dev/null 2>&1; then
         "${runner[@]}" sway --config /dev/null -c "$OOBE_BIN"
     elif command -v xinit >/dev/null 2>&1; then

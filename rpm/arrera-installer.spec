@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -178,6 +178,10 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Tue Nov 24 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-22
+- Mount devtmpfs (/dev), /proc, /sys, and /dev/pts inside Calamares chroot in arrera-postinstall.sh so block devices (/dev/vda, /dev/sda, /dev/nvme0n1) are visible to grub2-install on BIOS Legacy
+- Pass --windowed when launching Arrera Blue Lynx inside Cage to prevent wlroots Assertion 'surface->initialized' failed on premature fullscreen request
+
 * Tue Nov 24 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-21
 - Compute target root UUID and write /etc/kernel/cmdline before running dracut --hostonly to prevent build-host LVM root leak
 - Sanitize /boot/loader/entries/*.conf and /boot/grub2/grub.cfg against build-host LVM parameters
