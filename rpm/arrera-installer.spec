@@ -1,6 +1,6 @@
 Name:           arrera-installer
 Version:        2026.beta.1
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Configuration Calamares et session kiosque pour Arrera Linux
 Summary(en):    Calamares installer configuration and kiosk session for Arrera Linux
 
@@ -178,6 +178,13 @@ cp -f %{_sysconfdir}/calamares/settings-enterprise.conf %{_sysconfdir}/calamares
 %{_datadir}/calamares/branding/arrera-enterprise/
 
 %changelog
+* Fri Nov 27 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-23
+- Simplify Calamares pipeline on all 4 editions: remove packagechooser@installmode and users module
+- Remove obsolete packagechooser-installmode.conf, shellprocess-postinstall-education.conf and users.conf
+- Scope online post-install update exclusively to arrera-blue-lynx and abpm
+- Unify first-boot OOBE across home, education, enterprise (Cage GUI) and server (tty1 CLI)
+- Fix progress bar percentage text contrast on Server theme (white text on dark chunk)
+
 * Tue Nov 24 2026 Baptiste P <contact@arrera-software.org> - 2026.beta.1-22
 - Mount devtmpfs (/dev), /proc, /sys, and /dev/pts inside Calamares chroot in arrera-postinstall.sh so block devices (/dev/vda, /dev/sda, /dev/nvme0n1) are visible to grub2-install on BIOS Legacy
 - Pass --windowed when launching Arrera Blue Lynx inside Cage to prevent wlroots Assertion 'surface->initialized' failed on premature fullscreen request

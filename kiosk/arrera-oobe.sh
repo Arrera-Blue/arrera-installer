@@ -1,14 +1,16 @@
 #!/bin/bash
 # ==============================================================================
 # Arrera Linux - Lanceur OOBE de premier démarrage (Arrera Blue Lynx)
-# Exécuté une seule fois au premier démarrage pour les éditions Home et Education
-# dans le compositeur Wayland léger Cage, puis bascule vers GDM (ou redémarre
-# si le noyau CachyOS a été installé).
+# Exécuté une seule fois au premier démarrage sur les 4 éditions :
+# - Home, Education, Enterprise : interface graphique GTK4/Libadwaita sous Cage
+# - Server : assistant console interactif directement sur tty1
+# Puis bascule vers GDM (Desktop), getty@tty1 (Serveur) ou redémarre si le noyau
+# CachyOS a été installé.
 # ==============================================================================
 
 set -e
 
-# Détermination de l'édition (home ou education)
+# Détermination de l'édition (home, education, enterprise ou server)
 EDITION="${1:-${ARRERA_OOBE_EDITION:-}}"
 if [ -z "$EDITION" ] && [ -f /etc/arrera-oobe-edition ]; then
     EDITION="$(tr -d '[:space:]' < /etc/arrera-oobe-edition)"
@@ -18,14 +20,24 @@ EDITION="${EDITION:-home}"
 case "$EDITION" in
     education|edu)
         OOBE_BIN="/usr/bin/arrera-blue-lynx-education"
+        OOBE_MODE="gui"
+        ;;
+    enterprise|ent)
+        OOBE_BIN="/usr/bin/arrera-blue-lynx-enterprise"
+        OOBE_MODE="gui"
+        ;;
+    server|srv)
+        OOBE_BIN="/usr/bin/arrera-blue-lynx-server"
+        OOBE_MODE="cli"
         ;;
     home|*)
         OOBE_BIN="/usr/bin/arrera-blue-lynx-home"
+        OOBE_MODE="gui"
         ;;
 esac
 
-if [ ! -x "$OOBE_BIN" ]; then
-    for candidate in /usr/bin/arrera-blue-lynx-home /usr/bin/arrera-blue-lynx-education; do
+if [ "$OOBE_MODE" = "gui" ] && [ ! -x "$OOBE_BIN" ]; then
+    for candidate in /usr/bin/arrera-blue-lynx-home /usr/bin/arrera-blue-lynx-education /usr/bin/arrera-blue-lynx-enterprise; do
         if [ -x "$candidate" ]; then
             OOBE_BIN="$candidate"
             break
@@ -55,7 +67,7 @@ export XKB_DEFAULT_MODEL="pc105"
 
 on_oobe_error_prompt() {
     local reason="$1"
-    exec 1>/dev/tty1 2>&1 || true
+    exec 0</dev/tty1 1>/dev/tty1 2>&1 || true
     setterm -cursor on >/dev/tty1 2>/dev/null || true
     clear >/dev/tty1 2>/dev/null || true
 
@@ -98,6 +110,14 @@ if [ ! -x "$OOBE_BIN" ]; then
 fi
 
 run_oobe_session() {
+    if [ "$OOBE_MODE" = "cli" ]; then
+        setterm -cursor on >/dev/tty1 2>/dev/null || true
+        "$OOBE_BIN" </dev/tty1 >/dev/tty1 2>&1
+        return $?
+    fi
+
+    setterm -cursor off >/dev/tty1 2>/dev/null || true
+
     local runner=()
     if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && command -v dbus-run-session >/dev/null 2>&1; then
         runner=(dbus-run-session --)
@@ -117,7 +137,6 @@ run_oobe_session() {
 }
 
 clear >/dev/tty1 2>/dev/null || true
-setterm -cursor off >/dev/tty1 2>/dev/null || true
 plymouth quit 2>/dev/null || true
 
 set +e
@@ -141,13 +160,17 @@ rm -f /etc/arrera-oobe-edition
 rm -f /usr/local/bin/arrera-oobe.sh
 systemctl daemon-reload 2>/dev/null || true
 
-# Activation de la cible graphique et de GDM pour les démarrages suivants
-systemctl set-default graphical.target 2>/dev/null || ln -sf /usr/lib/systemd/system/graphical.target /etc/systemd/system/default.target
-systemctl enable gdm 2>/dev/null || ln -sf /usr/lib/systemd/system/gdm.service /etc/systemd/system/display-manager.service
+# Configuration de la cible finale selon le mode (Desktop vs Serveur)
+if [ "$OOBE_MODE" = "gui" ]; then
+    systemctl set-default graphical.target 2>/dev/null || ln -sf /usr/lib/systemd/system/graphical.target /etc/systemd/system/default.target
+    systemctl enable gdm 2>/dev/null || ln -sf /usr/lib/systemd/system/gdm.service /etc/systemd/system/display-manager.service
+else
+    systemctl set-default multi-user.target 2>/dev/null || ln -sf /usr/lib/systemd/system/multi-user.target /etc/systemd/system/default.target
+fi
 
 # Redémarrage requis uniquement si un nouveau noyau CachyOS vient d'être installé
 NEEDS_REBOOT=0
-if [ -f /etc/systemd/system/arrera-cleanup-fedora-kernel.service ]; then
+if [ -f /etc/systemd/system/arrera-cleanup-fedora-kernel.service ] || compgen -G "/boot/vmlinuz-*cachyos*" >/dev/null 2>&1; then
     case "$(uname -r)" in
         *cachyos*) ;;
         *) NEEDS_REBOOT=1 ;;
@@ -159,6 +182,10 @@ if [ "$NEEDS_REBOOT" -eq 1 ]; then
     exit 0
 fi
 
-# Bascule immédiate vers GDM sans redémarrage
-systemctl --no-block isolate graphical.target 2>/dev/null || systemctl --no-block start gdm.service 2>/dev/null || true
+# Bascule immédiate sans redémarrage : GDM sur Desktop, getty@tty1 sur Serveur
+if [ "$OOBE_MODE" = "gui" ]; then
+    systemctl --no-block isolate graphical.target 2>/dev/null || systemctl --no-block start gdm.service 2>/dev/null || true
+else
+    systemctl --no-block start getty@tty1.service 2>/dev/null || true
+fi
 exit 0

@@ -6,7 +6,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
 
 ## 1. Suppressions dans les configurations Calamares (`config/`)
 
-### [ ] A. Suppression de l'écran « Mode d'installation (En ligne / Hors-ligne) » (`packagechooser@installmode`)
+### [x] A. Suppression de l'écran « Mode d'installation (En ligne / Hors-ligne) » (`packagechooser@installmode`)
 - **Fichiers à modifier** :
   - [config/settings.conf](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/config/settings.conf)
   - [config/settings-home.conf](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/config/settings-home.conf)
@@ -27,7 +27,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
           timeout: 1200
     ```
 
-### [ ] B. Suppression du module `users` de Calamares sur toutes les éditions
+### [x] B. Suppression du module `users` de Calamares sur toutes les éditions
 - **Fichiers à modifier** :
   - [config/settings.conf](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/config/settings.conf)
   - [config/settings-enterprise.conf](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/config/settings-enterprise.conf)
@@ -44,7 +44,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
 
 ## 2. Mise à jour de `kiosk/arrera-postinstall.sh`
 
-### [ ] A. Étape 1 : Mise à jour exclusive de `arrera-blue-lynx` et `abpm`
+### [x] A. Étape 1 : Mise à jour exclusive de `arrera-blue-lynx` et `abpm`
 - **Fichier** : [kiosk/arrera-postinstall.sh](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/kiosk/arrera-postinstall.sh)
 - **Actions** :
   1. Supprimer la gestion du paramètre `$1` (`online` / `offline`).
@@ -59,7 +59,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
      ```
   4. Si aucune connexion Internet n'est détectée, continuer immédiatement avec les versions embarquées sur l'ISO.
 
-### [ ] B. Étapes 4, 7 et 8 : Activation de l'OOBE sur les 4 éditions (`home`, `education`, `enterprise`, `server`)
+### [x] B. Étapes 4, 7 et 8 : Activation de l'OOBE sur les 4 éditions (`home`, `education`, `enterprise`, `server`)
 - **Fichier** : [kiosk/arrera-postinstall.sh](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/kiosk/arrera-postinstall.sh)
 - **Actions** :
   1. Déterminer `OOBE_EDITION` et `IS_GRAPHICAL_OOBE` selon `ED_BRANDING` dans `/etc/calamares/settings.conf` :
@@ -79,7 +79,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
 
 ## 3. Mise à jour de `kiosk/arrera-oobe.sh`
 
-### [ ] A. Prise en charge des 4 éditions (3 graphiques sous Cage + 1 console sur `tty1`)
+### [x] A. Prise en charge des 4 éditions (3 graphiques sous Cage + 1 console sur `tty1`)
 - **Fichier** : [kiosk/arrera-oobe.sh](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/kiosk/arrera-oobe.sh)
 - **Actions** :
   1. Sélectionner le binaire selon `$EDITION` :
@@ -104,7 +104,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
 
 ## 4. Thème Serveur (`branding/arrera-server/stylesheet.qss`)
 
-### [ ] A. Lisibilité du pourcentage sur la barre de progression noire
+### [x] A. Lisibilité du pourcentage sur la barre de progression noire
 - **Fichier** : [branding/arrera-server/stylesheet.qss](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/branding/arrera-server/stylesheet.qss#L449-L466)
 - **Problème** : La barre de chargement (`QProgressBar::chunk`) est noire (`#303030`) et le texte du pourcentage (`QProgressBar { color: #1e1e1e; }`) est également noir, ce qui rend le pourcentage illisible dès que la barre dépasse 50 %.
 - **Action** :
@@ -115,7 +115,7 @@ Ce document détaille les modifications et suppressions à effectuer dans le dé
 
 ## 5. Packaging RPM (`rpm/arrera-installer.spec`)
 
-### [ ] A. Bump de version et validation
+### [x] A. Bump de version et validation
 - **Fichier** : [rpm/arrera-installer.spec](file:///Users/baptistep/Documents/arrera-blue/arrera-installer/rpm/arrera-installer.spec)
 - **Actions** :
   1. Retirer `packagechooser-installmode.conf`, `shellprocess-postinstall-education.conf` et `users.conf` s'ils étaient référencés explicitement.
